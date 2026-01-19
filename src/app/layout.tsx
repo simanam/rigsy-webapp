@@ -22,6 +22,10 @@ export const metadata: Metadata = {
     "HOS compliance",
   ],
   authors: [{ name: "Logixtecs Solutions LLC" }],
+  icons: {
+    icon: "/icon.svg",
+    apple: "/icon.svg",
+  },
   openGraph: {
     title: "Rigsy - AI Road Companion for Truck Drivers",
     description:

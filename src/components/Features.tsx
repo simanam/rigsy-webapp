@@ -544,14 +544,14 @@ function ConciergeResultsCard() {
             </p>
           </div>
           <motion.button
-            className="shrink-0 ml-2 px-3 py-1.5 bg-[#58A6FF] text-white text-[10px] sm:text-xs font-semibold rounded-full flex items-center gap-1"
+            className="shrink-0 ml-2 px-2.5 sm:px-3 py-1.5 bg-[#58A6FF] text-white text-[9px] sm:text-xs font-semibold rounded-full flex items-center gap-1"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
             <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
             </svg>
-            Go
+            Open in Maps
           </motion.button>
         </div>
       </div>
@@ -1309,13 +1309,15 @@ export default function Features() {
                     </div>
                   </div>
                 ) : (
-                  // Default visual with icon and conversation
+                  // Default visual with conversation (fallback)
                   <div className="w-full max-w-md">
-                    {/* Icon */}
+                    {/* Icon placeholder */}
                     <div
                       className={`w-20 h-20 rounded-2xl bg-gradient-to-br ${feature.gradient} flex items-center justify-center text-white mb-6 mx-auto lg:mx-0`}
                     >
-                      {feature.icon}
+                      <svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                      </svg>
                     </div>
 
                     {/* Example conversation */}

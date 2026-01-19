@@ -176,14 +176,14 @@ export default function Hero() {
             </motion.div>
           </motion.div>
 
-          {/* Right Column - Phone with Rigsy Eyes */}
+          {/* Right Column - Phone on Truck Dashboard */}
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
             className="relative flex flex-col items-center justify-center order-1 lg:order-2"
           >
-            {/* Phone Mockup */}
+            {/* Dashboard Scene Container */}
             <motion.div
               ref={phoneRef}
               initial={{ opacity: 0, y: 20 }}
@@ -191,34 +191,52 @@ export default function Hero() {
               transition={{ duration: 0.8, delay: 0.5 }}
               className="relative w-full max-w-xs sm:max-w-xl"
             >
-              {/* Animated glow effect */}
-              <motion.div
-                animate={{
-                  scale: [1, 1.05, 1],
-                  opacity: isListening ? [0.5, 0.8, 0.5] : [0.2, 0.4, 0.2],
-                }}
-                transition={{
-                  duration: isListening ? 1 : 4,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                }}
-                className="absolute inset-0 bg-gradient-to-r from-[#4B5EAA] via-[#FF6B35] to-[#4B5EAA] rounded-[1.5rem] sm:rounded-[2.5rem] blur-2xl -z-10"
-              />
-
-              {/* Phone frame */}
-              <div className="relative bg-gradient-to-br from-[#1a1a1a] to-[#2d2d2d] rounded-[1.5rem] sm:rounded-[2.5rem] p-[3px] sm:p-[4px] shadow-2xl">
-
-                {/* Phone Screen - Horizontal on all sizes */}
+              {/* Dashboard Background with Road View */}
+              <div className="relative rounded-xl sm:rounded-3xl overflow-hidden">
+                {/* Landscape image as background - zoomed in on road view */}
                 <div
-                  className="relative bg-[#0D1117] rounded-[1.3rem] sm:rounded-[2.2rem] overflow-hidden aspect-[16/10] sm:aspect-[19.5/9]"
-                >
-                  {/* Dynamic Island */}
-                  <div className="absolute top-1/2 left-2 sm:left-4 -translate-y-1/2 w-3 sm:w-5 h-10 sm:h-16 bg-[#000000] rounded-full z-20" />
+                  className="absolute inset-0 bg-cover sm:bg-size-[180%] bg-position-[70%_50%] sm:bg-position-[85%_40%]"
+                  style={{
+                    backgroundImage: 'url(/landscape.png)',
+                  }}
+                />
+                {/* Dark overlay - lighter to show more road */}
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0D1117]/85 via-[#0D1117]/50 to-[#0D1117]/35 sm:from-[#0D1117]/80 sm:via-[#0D1117]/40 sm:to-[#0D1117]/25" />
+                {/* Softer vignette effect */}
+                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_40%,#0D1117_100%)] sm:bg-[radial-gradient(ellipse_at_center,transparent_50%,#0D1117_100%)]" />
 
-                  {/* Rigsy Eyes Interface */}
-                  <div className="absolute inset-0 flex items-center justify-center p-3 sm:p-6 sm:py-8">
-                    {/* Horizontal layout SVG for mobile */}
-                    <svg viewBox="0 0 400 180" className="w-full h-full sm:hidden" preserveAspectRatio="xMidYMid meet">
+                {/* Content wrapper with padding */}
+                <div className="relative p-3 sm:p-8 pt-4 sm:pt-10">
+                  {/* Phone mount indicator - hidden on mobile */}
+                  <div className="hidden sm:flex justify-center mb-3">
+                    <div className="w-24 h-1.5 bg-[#21262D] rounded-full opacity-60" />
+                  </div>
+
+                  {/* Phone frame */}
+                  <div className="relative bg-gradient-to-br from-[#1a1a1a] to-[#2d2d2d] rounded-2xl sm:rounded-[2.5rem] p-[2px] sm:p-[4px] shadow-2xl mx-auto max-w-[280px] sm:max-w-none">
+                    {/* Animated glow effect */}
+                    <motion.div
+                      animate={{
+                        scale: [1, 1.05, 1],
+                        opacity: isListening ? [0.4, 0.6, 0.4] : [0.15, 0.25, 0.15],
+                      }}
+                      transition={{
+                        duration: isListening ? 1 : 4,
+                        repeat: Infinity,
+                        ease: "easeInOut",
+                      }}
+                      className="absolute inset-0 bg-gradient-to-r from-[#4B5EAA] via-[#FF6B35] to-[#4B5EAA] rounded-2xl sm:rounded-[2.5rem] blur-2xl -z-10"
+                    />
+
+                    {/* Phone Screen - Horizontal on all sizes */}
+                    <div className="relative bg-[#0D1117] rounded-[1.1rem] sm:rounded-[2.2rem] overflow-hidden aspect-video sm:aspect-[19.5/9]">
+                      {/* Dynamic Island */}
+                      <div className="absolute top-1/2 left-1.5 sm:left-4 -translate-y-1/2 w-2 sm:w-5 h-8 sm:h-16 bg-[#000000] rounded-full z-20" />
+
+                      {/* Rigsy Eyes Interface */}
+                      <div className="absolute inset-0 flex items-center justify-center p-2 sm:p-6 sm:py-8">
+                        {/* Horizontal layout SVG for mobile */}
+                        <svg viewBox="0 0 400 180" className="w-full h-full sm:hidden" preserveAspectRatio="xMidYMid meet">
                       {/* SVG Definitions for mobile */}
                       <defs>
                         <linearGradient id="mobileBodyGradient" x1="0%" y1="0%" x2="0%" y2="100%">
@@ -518,95 +536,50 @@ export default function Hero() {
                     </motion.button>
                   </div>
 
-                  {/* Subtle grid overlay */}
-                  <div
-                    className="absolute inset-0 opacity-[0.03] pointer-events-none"
-                    style={{
-                      backgroundImage: `radial-gradient(circle at 1px 1px, #F0F3F6 1px, transparent 0)`,
-                      backgroundSize: "24px 24px",
-                    }}
-                  />
-                </div>
-              </div>
+                      {/* Subtle grid overlay */}
+                      <div
+                        className="absolute inset-0 opacity-[0.03] pointer-events-none"
+                        style={{
+                          backgroundImage: `radial-gradient(circle at 1px 1px, #F0F3F6 1px, transparent 0)`,
+                          backgroundSize: "24px 24px",
+                        }}
+                      />
+                    </div>
+                  </div>
 
-              {/* Floating badges - desktop (outside phone) */}
-              <motion.div
-                animate={{ y: [-5, 5, -5] }}
-                transition={{
-                  duration: 3,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                }}
-                className="absolute -left-4 top-4 bg-[#161B22] px-3 py-2 rounded-xl border border-[#21262D] shadow-xl hidden sm:block"
-              >
-                <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-[#3FB950] animate-pulse" />
-                  <span className="text-xs font-medium text-[#F0F3F6] whitespace-nowrap">
-                    Voice Active
-                  </span>
-                </div>
-              </motion.div>
-
-              <motion.div
-                animate={{ y: [5, -5, 5] }}
-                transition={{
-                  duration: 3,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                  delay: 0.5,
-                }}
-                className="absolute -right-4 bottom-4 bg-[#161B22] px-3 py-2 rounded-xl border border-[#21262D] shadow-xl hidden sm:block"
-              >
-                <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-[#FF6B35] animate-pulse" />
-                  <span className="text-xs font-medium text-[#F0F3F6] whitespace-nowrap">
-                    ELD Connected
-                  </span>
-                </div>
-              </motion.div>
-
-              <motion.div
-                animate={{ y: [-3, 3, -3] }}
-                transition={{
-                  duration: 2.5,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                  delay: 1,
-                }}
-                className="absolute -right-2 top-8 bg-[#161B22] px-3 py-2 rounded-xl border border-[#21262D] shadow-xl hidden sm:block"
-              >
-                <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-[#4B5EAA] animate-pulse" />
-                  <span className="text-xs font-medium text-[#F0F3F6] whitespace-nowrap">
-                    Offline Ready
-                  </span>
-                </div>
-              </motion.div>
-            </motion.div>
-
-            {/* Mobile badges - below phone */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.7 }}
-              className="flex sm:hidden flex-wrap justify-center gap-2 mt-4"
-            >
-              <div className="bg-[#161B22] px-3 py-1.5 rounded-full border border-[#21262D]">
-                <div className="flex items-center gap-2">
-                  <div className="w-1.5 h-1.5 rounded-full bg-[#3FB950] animate-pulse" />
-                  <span className="text-[10px] font-medium text-[#F0F3F6]">Voice Active</span>
-                </div>
-              </div>
-              <div className="bg-[#161B22] px-3 py-1.5 rounded-full border border-[#21262D]">
-                <div className="flex items-center gap-2">
-                  <div className="w-1.5 h-1.5 rounded-full bg-[#FF6B35] animate-pulse" />
-                  <span className="text-[10px] font-medium text-[#F0F3F6]">ELD Connected</span>
-                </div>
-              </div>
-              <div className="bg-[#161B22] px-3 py-1.5 rounded-full border border-[#21262D]">
-                <div className="flex items-center gap-2">
-                  <div className="w-1.5 h-1.5 rounded-full bg-[#4B5EAA] animate-pulse" />
-                  <span className="text-[10px] font-medium text-[#F0F3F6]">Offline Ready</span>
+                  {/* Status badges inside dashboard scene */}
+                  <div className="flex justify-center gap-1.5 sm:gap-3 mt-2 sm:mt-4 pb-2 flex-wrap">
+                    <motion.div
+                      animate={{ opacity: [0.7, 1, 0.7] }}
+                      transition={{ duration: 2, repeat: Infinity }}
+                      className="bg-[#161B22]/80 backdrop-blur-sm px-2 sm:px-3 py-1 sm:py-1.5 rounded-full border border-[#21262D]/50"
+                    >
+                      <div className="flex items-center gap-1 sm:gap-2">
+                        <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-[#3FB950] animate-pulse" />
+                        <span className="text-[9px] sm:text-xs font-medium text-[#F0F3F6]">Voice Active</span>
+                      </div>
+                    </motion.div>
+                    <motion.div
+                      animate={{ opacity: [0.7, 1, 0.7] }}
+                      transition={{ duration: 2, repeat: Infinity, delay: 0.3 }}
+                      className="bg-[#161B22]/80 backdrop-blur-sm px-2 sm:px-3 py-1 sm:py-1.5 rounded-full border border-[#21262D]/50"
+                    >
+                      <div className="flex items-center gap-1 sm:gap-2">
+                        <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-[#FF6B35] animate-pulse" />
+                        <span className="text-[9px] sm:text-xs font-medium text-[#F0F3F6]">ELD Connected</span>
+                      </div>
+                    </motion.div>
+                    <motion.div
+                      animate={{ opacity: [0.7, 1, 0.7] }}
+                      transition={{ duration: 2, repeat: Infinity, delay: 0.6 }}
+                      className="bg-[#161B22]/80 backdrop-blur-sm px-2 sm:px-3 py-1 sm:py-1.5 rounded-full border border-[#21262D]/50 hidden sm:block"
+                    >
+                      <div className="flex items-center gap-1 sm:gap-2">
+                        <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-[#4B5EAA] animate-pulse" />
+                        <span className="text-[9px] sm:text-xs font-medium text-[#F0F3F6]">Offline Ready</span>
+                      </div>
+                    </motion.div>
+                  </div>
                 </div>
               </div>
             </motion.div>
