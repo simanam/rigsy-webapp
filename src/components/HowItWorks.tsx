@@ -118,7 +118,7 @@ export default function HowItWorks() {
                 {/* Step card */}
                 <div className="p-6 rounded-2xl bg-[#F9FAFB] border border-[#E5E7EB] hover:border-[#6366F1]/30 hover:shadow-md transition-all h-full">
                   {/* Number badge */}
-                  <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-linear-to-br from-[#6366F1] to-[#F97316] text-white font-bold text-lg mb-4" aria-hidden="true">
+                  <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-[#31407F] text-white font-bold text-lg mb-4" aria-hidden="true">
                     {step.number}
                   </div>
 
