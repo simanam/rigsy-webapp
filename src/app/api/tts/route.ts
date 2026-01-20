@@ -65,18 +65,22 @@ export async function POST(request: NextRequest) {
     // Basic origin check - only allow requests from our domain
     const origin = request.headers.get('origin')
     const referer = request.headers.get('referer')
-    const allowedOrigins = [
-      'http://localhost:3000',
-      'https://rigsy.co',
-      'https://www.rigsy.co',
-      process.env.NEXT_PUBLIC_SITE_URL,
-    ].filter(Boolean)
+    const allowedPatterns = [
+      'localhost',
+      'rigsy.co',
+      'rigsy.ai',
+      'rigsy-webapp.vercel.app',
+      'vercel.app',
+    ]
 
-    const isValidOrigin = allowedOrigins.some(allowed =>
-      origin?.startsWith(allowed as string) || referer?.startsWith(allowed as string)
+    const host = request.headers.get('host')
+    const checkOrigin = origin || referer || host || ''
+    const isValidOrigin = allowedPatterns.some(pattern =>
+      checkOrigin.includes(pattern)
     )
 
     if (!isValidOrigin && process.env.NODE_ENV === 'production') {
+      console.warn('TTS: Blocked request from:', { origin, referer, host })
       return NextResponse.json(
         { error: 'Unauthorized' },
         { status: 403 }
