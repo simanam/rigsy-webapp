@@ -86,12 +86,12 @@ export default function Hero() {
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-12">
         <div className="grid lg:grid-cols-2 gap-6 sm:gap-12 lg:gap-16 items-center">
-          {/* Left Column - Content */}
+          {/* Left Column - Content (first on mobile, first on desktop) */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-            className="space-y-4 sm:space-y-6 text-center lg:text-left order-2 lg:order-1"
+            className="space-y-4 sm:space-y-6 text-center lg:text-left order-1"
           >
             {/* Badge */}
             <motion.div
@@ -180,12 +180,12 @@ export default function Hero() {
             </motion.ul>
           </motion.div>
 
-          {/* Right Column - Phone on Truck Dashboard */}
+          {/* Right Column - Phone on Truck Dashboard (second on mobile, second on desktop) */}
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
-            className="relative flex flex-col items-center justify-center order-1 lg:order-2"
+            className="relative flex flex-col items-center justify-center order-2"
           >
             {/* Dashboard Scene Container */}
             <motion.div
@@ -231,125 +231,125 @@ export default function Hero() {
                   </div>
 
                   {/* Phone frame */}
-                  <div className="relative bg-gradient-to-br from-[#1a1a1a] to-[#2d2d2d] rounded-2xl sm:rounded-[2.5rem] p-[2px] sm:p-[4px] shadow-2xl mx-auto max-w-[280px] sm:max-w-none">
+                  <div className="relative bg-gradient-to-br from-[#1a1a1a] to-[#2d2d2d] rounded-[2.8rem] sm:rounded-[2.5rem] p-[3px] sm:p-[4px] shadow-2xl mx-auto w-[240px] sm:w-auto sm:max-w-none">
 
-                    {/* Phone Screen - Horizontal on all sizes */}
-                    <div className="relative bg-[#0D1117] rounded-[1.1rem] sm:rounded-[2.2rem] overflow-hidden aspect-video sm:aspect-[19.5/9]">
-                      {/* Dynamic Island */}
-                      <div className="absolute top-1/2 left-1.5 sm:left-4 -translate-y-1/2 w-2 sm:w-5 h-8 sm:h-16 bg-[#000000] rounded-full z-20" />
+                    {/* Phone Screen - Vertical on mobile (iPhone 14 Pro proportions 9:19.5), Horizontal on desktop */}
+                    <div className="relative bg-[#0D1117] rounded-[2.5rem] sm:rounded-[2.2rem] overflow-hidden aspect-[9/19.5] sm:aspect-[19.5/9]">
+                      {/* Dynamic Island - top center on mobile, left side on desktop */}
+                      <div className="absolute top-4 left-1/2 -translate-x-1/2 sm:top-1/2 sm:left-4 sm:-translate-x-0 sm:-translate-y-1/2 w-24 h-7 sm:w-5 sm:h-16 bg-[#000000] rounded-full z-20" />
 
                       {/* Rigsy Eyes Interface */}
-                      <div className="absolute inset-0 flex items-center justify-center p-2 sm:p-6 sm:py-8">
-                        {/* Horizontal layout SVG for mobile */}
-                        <svg viewBox="0 0 400 180" className="w-full h-full sm:hidden" preserveAspectRatio="xMidYMid meet" aria-hidden="true" role="img">
-                      {/* SVG Definitions for mobile */}
-                      <defs>
-                        <linearGradient id="mobileBodyGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                          <stop offset="0%" stopColor="#2D2D44" />
-                          <stop offset="100%" stopColor="#1A1A2E" />
-                        </linearGradient>
-                        <linearGradient id="mobileEyeRingGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                          <stop offset="0%" stopColor="#F0F3F6" />
-                          <stop offset="100%" stopColor="#B0B0C0" />
-                        </linearGradient>
-                        <radialGradient id="mobileInnerEyeGradient" cx="50%" cy="30%" r="70%">
-                          <stop offset="0%" stopColor="#2D2D44" />
-                          <stop offset="100%" stopColor="#0D1117" />
-                        </radialGradient>
-                        <radialGradient id="mobilePupilGradient" cx="30%" cy="30%" r="70%">
-                          <stop offset="0%" stopColor="#1A1A2E" />
-                          <stop offset="100%" stopColor="#000000" />
-                        </radialGradient>
-                        <filter id="mobileGlow" x="-50%" y="-50%" width="200%" height="200%">
-                          <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
-                          <feMerge>
-                            <feMergeNode in="coloredBlur"/>
-                            <feMergeNode in="SourceGraphic"/>
-                          </feMerge>
-                        </filter>
-                      </defs>
+                      <div className="absolute inset-0 flex items-center justify-center p-4 sm:p-6 sm:py-8">
+                        {/* Horizontal binoculars in vertical phone for mobile */}
+                        <svg viewBox="0 0 200 100" className="w-full sm:hidden" preserveAspectRatio="xMidYMid meet" aria-hidden="true" role="img">
+                          {/* SVG Definitions for mobile */}
+                          <defs>
+                            <linearGradient id="mobileBodyGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                              <stop offset="0%" stopColor="#2D2D44" />
+                              <stop offset="100%" stopColor="#1A1A2E" />
+                            </linearGradient>
+                            <linearGradient id="mobileEyeRingGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                              <stop offset="0%" stopColor="#F0F3F6" />
+                              <stop offset="100%" stopColor="#B0B0C0" />
+                            </linearGradient>
+                            <radialGradient id="mobileInnerEyeGradient" cx="50%" cy="30%" r="70%">
+                              <stop offset="0%" stopColor="#2D2D44" />
+                              <stop offset="100%" stopColor="#0D1117" />
+                            </radialGradient>
+                            <radialGradient id="mobilePupilGradient" cx="30%" cy="30%" r="70%">
+                              <stop offset="0%" stopColor="#1A1A2E" />
+                              <stop offset="100%" stopColor="#000000" />
+                            </radialGradient>
+                            <filter id="mobileGlow" x="-50%" y="-50%" width="200%" height="200%">
+                              <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+                              <feMerge>
+                                <feMergeNode in="coloredBlur"/>
+                                <feMergeNode in="SourceGraphic"/>
+                              </feMerge>
+                            </filter>
+                          </defs>
 
-                      {/* Horizontal binocular body - same as desktop */}
-                      <g>
-                        {/* Left goggle */}
-                        <ellipse cx="110" cy="90" rx="100" ry="88" fill="url(#mobileBodyGradient)" />
-                        {/* Right goggle */}
-                        <ellipse cx="290" cy="90" rx="100" ry="88" fill="url(#mobileBodyGradient)" />
-                        {/* Bridge */}
-                        <path
-                          d="M 160 35 Q 200 5 240 35 L 240 145 Q 200 175 160 145 Z"
-                          fill="url(#mobileBodyGradient)"
-                        />
-                      </g>
+                          {/* Horizontal binocular body - eyes side by side */}
+                          <g>
+                            {/* Left goggle */}
+                            <ellipse cx="55" cy="50" rx="50" ry="46" fill="url(#mobileBodyGradient)" />
+                            {/* Right goggle */}
+                            <ellipse cx="145" cy="50" rx="50" ry="46" fill="url(#mobileBodyGradient)" />
+                            {/* Bridge */}
+                            <path
+                              d="M 80 20 Q 100 5 120 20 L 120 80 Q 100 95 80 80 Z"
+                              fill="url(#mobileBodyGradient)"
+                            />
+                          </g>
 
-                      {/* Left eye */}
-                      <g>
-                        <circle cx={110} cy={90} r={72} fill="none" stroke="url(#mobileEyeRingGradient)" strokeWidth="10" />
-                        <circle cx={110} cy={90} r={57.6} fill="url(#mobileInnerEyeGradient)" />
-                        <motion.g
-                          animate={{
-                            x: pupilOffsetX,
-                            y: pupilOffsetY,
-                            scale: isAwake ? 1 : 0
-                          }}
-                          transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                        >
-                          <circle cx={110} cy={90} r={28} fill="url(#mobilePupilGradient)" />
-                          <circle cx={98} cy={78} r={9} fill="white" opacity="0.9" />
-                          <circle cx={118} cy={98} r={4.5} fill="white" opacity="0.5" />
-                        </motion.g>
-                        <motion.ellipse
-                          cx={110}
-                          cy={90}
-                          rx={58.6}
-                          fill="#1A1A2E"
-                          animate={{ ry: isBlinking || !isAwake ? 58.6 : 0 }}
-                          transition={{ duration: isAwake ? 0.1 : 0.5 }}
-                        />
-                        <path d="M 60 50 Q 110 12 160 50" fill="none" stroke="white" strokeWidth="4" strokeLinecap="round" opacity="0.15" />
-                      </g>
+                          {/* Left eye */}
+                          <g>
+                            <circle cx={55} cy={50} r={38} fill="none" stroke="url(#mobileEyeRingGradient)" strokeWidth="5" />
+                            <circle cx={55} cy={50} r={30} fill="url(#mobileInnerEyeGradient)" />
+                            <motion.g
+                              animate={{
+                                x: pupilOffsetX * 0.5,
+                                y: pupilOffsetY * 0.4,
+                                scale: isAwake ? 1 : 0
+                              }}
+                              transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                            >
+                              <circle cx={55} cy={50} r={15} fill="url(#mobilePupilGradient)" />
+                              <circle cx={49} cy={44} r={5} fill="white" opacity="0.9" />
+                              <circle cx={60} cy={55} r={2.5} fill="white" opacity="0.5" />
+                            </motion.g>
+                            <motion.ellipse
+                              cx={55}
+                              cy={50}
+                              rx={31}
+                              fill="#1A1A2E"
+                              animate={{ ry: isBlinking || !isAwake ? 31 : 0 }}
+                              transition={{ duration: isAwake ? 0.1 : 0.5 }}
+                            />
+                            <path d="M 28 28 Q 55 10 82 28" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" opacity="0.15" />
+                          </g>
 
-                      {/* Right eye */}
-                      <g>
-                        <circle cx={290} cy={90} r={72} fill="none" stroke="url(#mobileEyeRingGradient)" strokeWidth="10" />
-                        <circle cx={290} cy={90} r={57.6} fill="url(#mobileInnerEyeGradient)" />
-                        <motion.g
-                          animate={{
-                            x: pupilOffsetX,
-                            y: pupilOffsetY,
-                            scale: isAwake ? 1 : 0
-                          }}
-                          transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                        >
-                          <circle cx={290} cy={90} r={28} fill="url(#mobilePupilGradient)" />
-                          <circle cx={278} cy={78} r={9} fill="white" opacity="0.9" />
-                          <circle cx={298} cy={98} r={4.5} fill="white" opacity="0.5" />
-                        </motion.g>
-                        <motion.ellipse
-                          cx={290}
-                          cy={90}
-                          rx={58.6}
-                          fill="#1A1A2E"
-                          animate={{ ry: isBlinking || !isAwake ? 58.6 : 0 }}
-                          transition={{ duration: isAwake ? 0.1 : 0.5 }}
-                        />
-                        <path d="M 240 50 Q 290 12 340 50" fill="none" stroke="white" strokeWidth="4" strokeLinecap="round" opacity="0.15" />
-                      </g>
+                          {/* Right eye */}
+                          <g>
+                            <circle cx={145} cy={50} r={38} fill="none" stroke="url(#mobileEyeRingGradient)" strokeWidth="5" />
+                            <circle cx={145} cy={50} r={30} fill="url(#mobileInnerEyeGradient)" />
+                            <motion.g
+                              animate={{
+                                x: pupilOffsetX * 0.5,
+                                y: pupilOffsetY * 0.4,
+                                scale: isAwake ? 1 : 0
+                              }}
+                              transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                            >
+                              <circle cx={145} cy={50} r={15} fill="url(#mobilePupilGradient)" />
+                              <circle cx={139} cy={44} r={5} fill="white" opacity="0.9" />
+                              <circle cx={150} cy={55} r={2.5} fill="white" opacity="0.5" />
+                            </motion.g>
+                            <motion.ellipse
+                              cx={145}
+                              cy={50}
+                              rx={31}
+                              fill="#1A1A2E"
+                              animate={{ ry: isBlinking || !isAwake ? 31 : 0 }}
+                              transition={{ duration: isAwake ? 0.1 : 0.5 }}
+                            />
+                            <path d="M 118 28 Q 145 10 172 28" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" opacity="0.15" />
+                          </g>
 
-                      {/* Orange accent on bridge */}
-                      <motion.circle
-                        cx="200"
-                        cy="90"
-                        r="6"
-                        fill="#FF6B35"
-                        filter="url(#mobileGlow)"
-                        animate={{
-                          opacity: isListening ? [0.8, 1, 0.8] : 0.6,
-                          r: isListening ? [6, 10, 6] : 6
-                        }}
-                        transition={{ duration: 0.5, repeat: isListening ? Infinity : 0 }}
-                      />
-                    </svg>
+                          {/* Orange accent on bridge */}
+                          <motion.circle
+                            cx="100"
+                            cy="50"
+                            r="4"
+                            fill="#FF6B35"
+                            filter="url(#mobileGlow)"
+                            animate={{
+                              opacity: isListening ? [0.8, 1, 0.8] : 0.6,
+                              r: isListening ? [4, 6, 4] : 4
+                            }}
+                            transition={{ duration: 0.5, repeat: isListening ? Infinity : 0 }}
+                          />
+                        </svg>
 
                     {/* Horizontal layout SVG for desktop */}
                     <svg viewBox="0 0 400 180" className="hidden sm:block w-full h-full" preserveAspectRatio="xMidYMid meet" aria-hidden="true" role="img">
