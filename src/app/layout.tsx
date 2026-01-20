@@ -64,7 +64,7 @@ export const metadata: Metadata = {
     locale: "en_US",
     images: [
       {
-        url: "/og-image.png",
+        url: "/og-image-light.png",
         width: 1200,
         height: 630,
         alt: "Rigsy - AI Road Companion for Truck Drivers",
@@ -76,7 +76,7 @@ export const metadata: Metadata = {
     title: "Rigsy - AI Road Companion for Truck Drivers",
     description:
       "The voice-first AI co-pilot designed for professional truck drivers. Handle ELD compliance, get health coaching, and never drive alone again.",
-    images: ["/og-image.png"],
+    images: ["/og-image-light.png"],
   },
   alternates: {
     canonical: "https://rigsy.ai",

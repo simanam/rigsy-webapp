@@ -188,6 +188,10 @@ export default function Hero() {
   const pupilOffsetX = basePupilOffsetX + speakingOffset.x;
   const pupilOffsetY = basePupilOffsetY + speakingOffset.y;
 
+  // Calculate gimbal rotation for phone - tilt following eye movement
+  const gimbalRotateX = (basePupilOffsetY + speakingOffset.y * 0.5) * -0.8; // Tilt forward/back
+  const gimbalRotateY = (basePupilOffsetX + speakingOffset.x * 0.5) * 0.6; // Tilt left/right
+
   // Play TTS audio
   const playTTS = useCallback(async (text: string, hash: string) => {
     try {
@@ -486,7 +490,7 @@ export default function Hero() {
             >
               Your Voice. Your Rig.
               <br />
-              <span className="text-gradient">Your Rules.</span>
+              <span className="text-[#F97316]">Your Rules.</span>
             </motion.h1>
 
             {/* Subheading */}
@@ -580,34 +584,25 @@ export default function Hero() {
                 className="absolute -inset-4 sm:-inset-6 bg-linear-to-r from-[#6366F1] via-[#F97316] to-[#6366F1] rounded-2xl sm:rounded-4xl blur-2xl sm:blur-3xl"
               />
 
-              {/* Dashboard Background with Road View */}
-              <div className="relative rounded-xl sm:rounded-3xl overflow-hidden">
-                {/* Landscape image as background - zoomed in on road view */}
-                <div
-                  className="absolute inset-0 bg-cover sm:bg-size-[180%] bg-position-[70%_50%] sm:bg-position-[85%_40%]"
-                  style={{
-                    backgroundImage: 'url(/landscape.png)',
-                  }}
-                />
-                {/* Dark overlay - lighter to show more road */}
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0D1117]/85 via-[#0D1117]/50 to-[#0D1117]/35 sm:from-[#0D1117]/80 sm:via-[#0D1117]/40 sm:to-[#0D1117]/25" />
-                {/* Softer vignette effect */}
-                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_40%,#0D1117_100%)] sm:bg-[radial-gradient(ellipse_at_center,transparent_50%,#0D1117_100%)]" />
-
-                {/* Content wrapper with padding */}
-                <div className="relative p-3 sm:p-8 pt-4 sm:pt-10">
-                  {/* Phone mount indicator - hidden on mobile */}
-                  <div className="hidden sm:flex justify-center mb-3">
-                    <div className="w-24 h-1.5 bg-[#21262D] rounded-full opacity-60" />
-                  </div>
-
-                  {/* Phone frame */}
-                  <div className="relative bg-gradient-to-br from-[#1a1a1a] to-[#2d2d2d] rounded-[2.8rem] sm:rounded-[2.5rem] p-[3px] sm:p-[4px] shadow-2xl mx-auto w-[240px] sm:w-auto sm:max-w-none">
+              {/* Phone frame with gimbal effect */}
+              <motion.div
+                className="relative bg-linear-to-br from-[#1a1a1a] to-[#2d2d2d] rounded-[2.8rem] sm:rounded-[2.5rem] p-[3px] sm:p-[4px] shadow-2xl mx-auto w-[240px] sm:w-auto sm:max-w-none"
+                animate={{
+                  rotateX: gimbalRotateX,
+                  rotateY: gimbalRotateY,
+                }}
+                transition={{
+                  type: "spring",
+                  stiffness: 100,
+                  damping: 20,
+                }}
+                style={{ perspective: 1000, transformStyle: "preserve-3d" }}
+              >
 
                     {/* Phone Screen - Vertical on mobile (iPhone 14 Pro proportions 9:19.5), Horizontal on desktop */}
-                    <div className="relative bg-[#0D1117] rounded-[2.5rem] sm:rounded-[2.2rem] overflow-hidden aspect-[9/19.5] sm:aspect-[19.5/9]">
+                    <div className="relative bg-[#1C1C1E] rounded-[2.5rem] sm:rounded-[2.2rem] overflow-hidden aspect-[9/19.5] sm:aspect-[19.5/9]">
                       {/* Dynamic Island - top center on mobile, left side on desktop */}
-                      <div className="absolute top-4 left-1/2 -translate-x-1/2 sm:top-1/2 sm:left-4 sm:-translate-x-0 sm:-translate-y-1/2 w-24 h-7 sm:w-5 sm:h-16 bg-[#000000] rounded-full z-20" />
+                      <div className="absolute top-4 left-1/2 -translate-x-1/2 sm:top-1/2 sm:left-4 sm:-translate-x-0 sm:-translate-y-1/2 w-24 h-7 sm:w-5 sm:h-16 bg-[#000000] rounded-full z-20 shadow-lg" />
 
                       {/* Rigsy Eyes Interface */}
                       <div className="absolute inset-0 flex items-center justify-center p-4 sm:p-6 sm:py-8">
@@ -1020,42 +1015,40 @@ export default function Hero() {
                         }}
                       />
                     </div>
-                  </div>
+                  </motion.div>
 
-                  {/* Status badges inside dashboard scene */}
-                  <div className="flex justify-center gap-1.5 sm:gap-3 mt-2 sm:mt-4 pb-2 flex-wrap">
-                    <motion.div
-                      animate={{ opacity: [0.7, 1, 0.7] }}
-                      transition={{ duration: 2, repeat: Infinity }}
-                      className="bg-[#161B22]/80 backdrop-blur-sm px-2 sm:px-3 py-1 sm:py-1.5 rounded-full border border-[#21262D]/50"
-                    >
-                      <div className="flex items-center gap-1 sm:gap-2">
-                        <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-[#3FB950] animate-pulse" />
-                        <span className="text-[9px] sm:text-xs font-medium text-[#F0F3F6]">Voice Active</span>
-                      </div>
-                    </motion.div>
-                    <motion.div
-                      animate={{ opacity: [0.7, 1, 0.7] }}
-                      transition={{ duration: 2, repeat: Infinity, delay: 0.3 }}
-                      className="bg-[#161B22]/80 backdrop-blur-sm px-2 sm:px-3 py-1 sm:py-1.5 rounded-full border border-[#21262D]/50"
-                    >
-                      <div className="flex items-center gap-1 sm:gap-2">
-                        <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-[#FF6B35] animate-pulse" />
-                        <span className="text-[9px] sm:text-xs font-medium text-[#F0F3F6]">ELD Connected</span>
-                      </div>
-                    </motion.div>
-                    <motion.div
-                      animate={{ opacity: [0.7, 1, 0.7] }}
-                      transition={{ duration: 2, repeat: Infinity, delay: 0.6 }}
-                      className="bg-[#161B22]/80 backdrop-blur-sm px-2 sm:px-3 py-1 sm:py-1.5 rounded-full border border-[#21262D]/50 hidden sm:block"
-                    >
-                      <div className="flex items-center gap-1 sm:gap-2">
-                        <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-[#4B5EAA] animate-pulse" />
-                        <span className="text-[9px] sm:text-xs font-medium text-[#F0F3F6]">Offline Ready</span>
-                      </div>
-                    </motion.div>
+              {/* Status badges - floating below phone */}
+              <div className="flex justify-center gap-1.5 sm:gap-3 mt-4 sm:mt-6 flex-wrap">
+                <motion.div
+                  animate={{ opacity: [0.7, 1, 0.7] }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                  className="bg-white/90 backdrop-blur-sm px-2 sm:px-3 py-1 sm:py-1.5 rounded-full border border-[#E5E7EB] shadow-sm"
+                >
+                  <div className="flex items-center gap-1 sm:gap-2">
+                    <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-[#10B981] animate-pulse" />
+                    <span className="text-[9px] sm:text-xs font-medium text-[#1F2937]">Voice Active</span>
                   </div>
-                </div>
+                </motion.div>
+                <motion.div
+                  animate={{ opacity: [0.7, 1, 0.7] }}
+                  transition={{ duration: 2, repeat: Infinity, delay: 0.3 }}
+                  className="bg-white/90 backdrop-blur-sm px-2 sm:px-3 py-1 sm:py-1.5 rounded-full border border-[#E5E7EB] shadow-sm"
+                >
+                  <div className="flex items-center gap-1 sm:gap-2">
+                    <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-[#F97316] animate-pulse" />
+                    <span className="text-[9px] sm:text-xs font-medium text-[#1F2937]">ELD Connected</span>
+                  </div>
+                </motion.div>
+                <motion.div
+                  animate={{ opacity: [0.7, 1, 0.7] }}
+                  transition={{ duration: 2, repeat: Infinity, delay: 0.6 }}
+                  className="bg-white/90 backdrop-blur-sm px-2 sm:px-3 py-1 sm:py-1.5 rounded-full border border-[#E5E7EB] shadow-sm hidden sm:block"
+                >
+                  <div className="flex items-center gap-1 sm:gap-2">
+                    <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-[#6366F1] animate-pulse" />
+                    <span className="text-[9px] sm:text-xs font-medium text-[#1F2937]">Offline Ready</span>
+                  </div>
+                </motion.div>
               </div>
             </motion.div>
           </motion.div>

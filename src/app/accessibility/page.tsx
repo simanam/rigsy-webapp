@@ -11,14 +11,14 @@ export default function AccessibilityStatement() {
   const lastReviewDate = "January 19, 2026";
 
   return (
-    <div className="min-h-screen bg-[#0D1117]">
+    <div className="min-h-screen bg-[#FAFBFC]">
       {/* Header */}
-      <header className="border-b border-[#21262D]">
+      <header className="border-b border-[#E5E7EB] bg-white">
         <div className="max-w-4xl mx-auto px-6 py-4">
           <Link
             href="/"
             aria-label="Rigsy - Return to homepage"
-            className="inline-block rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FF6B35] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0D1117]"
+            className="inline-block rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F97316] focus-visible:ring-offset-2 focus-visible:ring-offset-white"
           >
             <RigsyLogo size={32} variant="full" />
           </Link>
@@ -28,13 +28,13 @@ export default function AccessibilityStatement() {
       {/* Main Content */}
       <main id="main-content" tabIndex={-1} className="max-w-4xl mx-auto px-6 py-12 md:py-16">
         <article>
-          <h1 className="text-3xl md:text-4xl font-bold text-[#F0F3F6] mb-8">
+          <h1 className="text-3xl md:text-4xl font-bold text-[#1F2937] mb-8">
             Accessibility Statement
           </h1>
 
-          <div className="prose prose-invert max-w-none space-y-8 text-[#8B949E]">
+          <div className="prose max-w-none space-y-8 text-[#4B5563]">
             <section>
-              <h2 className="text-xl font-semibold text-[#F0F3F6] mb-3">
+              <h2 className="text-xl font-semibold text-[#1F2937] mb-3">
                 Our Commitment
               </h2>
               <p className="leading-relaxed">
@@ -45,12 +45,12 @@ export default function AccessibilityStatement() {
             </section>
 
             <section>
-              <h2 className="text-xl font-semibold text-[#F0F3F6] mb-3">
+              <h2 className="text-xl font-semibold text-[#1F2937] mb-3">
                 Conformance Goal
               </h2>
               <p className="leading-relaxed">
                 We strive to conform to the{" "}
-                <strong className="text-[#F0F3F6]">
+                <strong className="text-[#1F2937]">
                   Web Content Accessibility Guidelines (WCAG) 2.1 Level AA
                 </strong>
                 . These guidelines explain how to make web content more accessible for people
@@ -59,7 +59,7 @@ export default function AccessibilityStatement() {
             </section>
 
             <section>
-              <h2 className="text-xl font-semibold text-[#F0F3F6] mb-3">
+              <h2 className="text-xl font-semibold text-[#1F2937] mb-3">
                 Ongoing Efforts
               </h2>
               <p className="leading-relaxed">
@@ -70,7 +70,7 @@ export default function AccessibilityStatement() {
             </section>
 
             <section>
-              <h2 className="text-xl font-semibold text-[#F0F3F6] mb-3">
+              <h2 className="text-xl font-semibold text-[#1F2937] mb-3">
                 Feedback
               </h2>
               <p className="leading-relaxed">
@@ -80,7 +80,7 @@ export default function AccessibilityStatement() {
               <p className="mt-4">
                 <a
                   href="mailto:accessibility@logixtecs.com"
-                  className="text-[#FF6B35] hover:text-[#FF8255] underline underline-offset-4 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FF6B35] rounded"
+                  className="text-[#F97316] hover:text-[#EA580C] underline underline-offset-4 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F97316] rounded"
                 >
                   accessibility@logixtecs.com
                 </a>
@@ -90,9 +90,9 @@ export default function AccessibilityStatement() {
               </p>
             </section>
 
-            <section className="pt-4 border-t border-[#21262D]">
-              <p className="text-sm text-[#6E7681]">
-                <strong className="text-[#8B949E]">Last reviewed:</strong> {lastReviewDate}
+            <section className="pt-4 border-t border-[#E5E7EB]">
+              <p className="text-sm text-[#6B7280]">
+                <strong className="text-[#4B5563]">Last reviewed:</strong> {lastReviewDate}
               </p>
             </section>
           </div>
@@ -102,7 +102,7 @@ export default function AccessibilityStatement() {
         <div className="mt-12">
           <Link
             href="/"
-            className="inline-flex items-center gap-2 text-[#8B949E] hover:text-[#F0F3F6] transition-colors rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FF6B35] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0D1117]"
+            className="inline-flex items-center gap-2 text-[#4B5563] hover:text-[#1F2937] transition-colors rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F97316] focus-visible:ring-offset-2 focus-visible:ring-offset-[#FAFBFC]"
           >
             <svg
               className="w-4 h-4"
@@ -124,9 +124,9 @@ export default function AccessibilityStatement() {
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-[#21262D] mt-auto">
+      <footer className="border-t border-[#E5E7EB] mt-auto bg-white">
         <div className="max-w-4xl mx-auto px-6 py-8">
-          <p className="text-sm text-[#6E7681] text-center">
+          <p className="text-sm text-[#6B7280] text-center">
             &copy; {new Date().getFullYear()} Logixtecs Solutions LLC. All rights reserved.
           </p>
         </div>
