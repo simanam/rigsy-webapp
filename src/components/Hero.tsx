@@ -198,8 +198,9 @@ export default function Hero() {
       });
 
       if (!ttsResponse.ok) {
-        console.error('TTS failed');
+        console.error('TTS failed:', ttsResponse.status);
         setChatState('idle');
+        setEyesShifted(false);
         return;
       }
 
@@ -208,20 +209,42 @@ export default function Hero() {
 
       if (audioRef.current) {
         audioRef.current.pause();
+        audioRef.current.src = '';
       }
 
-      audioRef.current = new Audio(audioUrl);
-      audioRef.current.onended = () => {
+      // Create audio element with attributes for better mobile support
+      const audio = new Audio();
+      audio.preload = 'auto';
+      audio.setAttribute('playsinline', 'true'); // Important for iOS
+      audio.setAttribute('webkit-playsinline', 'true'); // Legacy iOS
+      audioRef.current = audio;
+
+      audio.onended = () => {
         setChatState('idle');
         setEyesShifted(false);
         URL.revokeObjectURL(audioUrl);
       };
-      audioRef.current.onerror = () => {
+      audio.onerror = (e) => {
+        console.error('Audio playback error:', e);
         setChatState('idle');
         setEyesShifted(false);
+        URL.revokeObjectURL(audioUrl);
       };
 
-      await audioRef.current.play();
+      // Set source and load
+      audio.src = audioUrl;
+      audio.load();
+
+      // Try to play with user activation context
+      try {
+        await audio.play();
+      } catch (playError) {
+        console.error('Audio play failed:', playError);
+        // On mobile, if autoplay fails, still show the response but reset state
+        setChatState('idle');
+        setEyesShifted(false);
+        URL.revokeObjectURL(audioUrl);
+      }
     } catch (error) {
       console.error('TTS error:', error);
       setChatState('idle');
@@ -366,8 +389,22 @@ export default function Hero() {
     }
   }, []);
 
+  // Warm up audio context on first user interaction (required for mobile)
+  const warmUpAudio = useCallback(() => {
+    // Create and play a silent audio to unlock audio playback on iOS/Android
+    const silentAudio = new Audio('data:audio/wav;base64,UklGRigAAABXQVZFZm10IBIAAAABAAEARKwAAIhYAQACABAAAABkYXRhAgAAAAEA');
+    silentAudio.setAttribute('playsinline', 'true');
+    silentAudio.volume = 0.01;
+    silentAudio.play().catch(() => {
+      // Ignore errors - this is just to unlock audio
+    });
+  }, []);
+
   // Handle mic button click
   const handleMicClick = () => {
+    // Warm up audio on every click to maintain user gesture context
+    warmUpAudio();
+
     if (chatState === 'listening') {
       stopListening();
     } else if (chatState === 'idle' || chatState === 'signup') {
