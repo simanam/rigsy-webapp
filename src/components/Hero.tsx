@@ -488,9 +488,9 @@ export default function Hero() {
               transition={{ duration: 0.8, delay: 0.3 }}
               className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-[#1F2937] leading-[1.1]"
             >
-              Your Voice. Your Rig.
+             Voice-First AI for
               <br />
-              <span className="text-[#F97316]">Your Rules.</span>
+              <span className="text-[#F97316]">Truck Drivers.</span>
             </motion.h1>
 
             {/* Subheading */}
