@@ -1,19 +1,94 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
-import { motion } from "framer-motion";
+import { useState, useEffect, useRef, useCallback } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+
+// Generate a unique session ID for rate limiting
+function generateSessionId(): string {
+  return `rigsy_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+}
+
+// Speech recognition types
+interface SpeechRecognitionEvent extends Event {
+  results: SpeechRecognitionResultList;
+  resultIndex: number;
+}
+
+interface SpeechRecognitionResultList {
+  length: number;
+  item(index: number): SpeechRecognitionResult;
+  [index: number]: SpeechRecognitionResult;
+}
+
+interface SpeechRecognitionResult {
+  isFinal: boolean;
+  length: number;
+  item(index: number): SpeechRecognitionAlternative;
+  [index: number]: SpeechRecognitionAlternative;
+}
+
+interface SpeechRecognitionAlternative {
+  transcript: string;
+  confidence: number;
+}
+
+interface SpeechRecognition extends EventTarget {
+  continuous: boolean;
+  interimResults: boolean;
+  lang: string;
+  start(): void;
+  stop(): void;
+  abort(): void;
+  onresult: ((event: SpeechRecognitionEvent) => void) | null;
+  onerror: ((event: Event) => void) | null;
+  onend: (() => void) | null;
+  onstart: (() => void) | null;
+}
+
+declare global {
+  interface Window {
+    SpeechRecognition: new () => SpeechRecognition;
+    webkitSpeechRecognition: new () => SpeechRecognition;
+  }
+}
+
+// Chat state type
+type ChatState = 'idle' | 'listening' | 'processing' | 'speaking' | 'signup';
 
 export default function Hero() {
   const [mousePosition, setMousePosition] = useState({ x: 0.5, y: 0.5 });
   const [isBlinking, setIsBlinking] = useState(false);
   const [isAwake, setIsAwake] = useState(false);
-  const [isListening, setIsListening] = useState(false);
-  const phoneRef = useRef<HTMLDivElement>(null);
+  const [chatState, setChatState] = useState<ChatState>('idle');
+  const [transcript, setTranscript] = useState('');
+  const [response, setResponse] = useState('');
+  const [sessionCount, setSessionCount] = useState(0);
+  const [showSignupPrompt, setShowSignupPrompt] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [eyesShifted, setEyesShifted] = useState(false);
 
-  // Track mouse position relative to phone
+  const phoneRef = useRef<HTMLDivElement>(null);
+  const sessionIdRef = useRef<string>('');
+  const recognitionRef = useRef<SpeechRecognition | null>(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  // Initialize session ID on mount
+  useEffect(() => {
+    // Check for existing session in sessionStorage
+    const existingSession = sessionStorage.getItem('rigsy_session_id');
+    if (existingSession) {
+      sessionIdRef.current = existingSession;
+    } else {
+      const newSessionId = generateSessionId();
+      sessionIdRef.current = newSessionId;
+      sessionStorage.setItem('rigsy_session_id', newSessionId);
+    }
+  }, []);
+
+  // Track mouse position relative to phone (only when not in voice mode)
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
-      if (phoneRef.current) {
+      if (phoneRef.current && chatState === 'idle') {
         const rect = phoneRef.current.getBoundingClientRect();
         const centerX = rect.left + rect.width / 2;
         const centerY = rect.top + rect.height / 2;
@@ -30,7 +105,7 @@ export default function Hero() {
 
     window.addEventListener("mousemove", handleMouseMove);
     return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, []);
+  }, [chatState]);
 
   // Random blink effect
   useEffect(() => {
@@ -52,18 +127,204 @@ export default function Hero() {
     return () => clearTimeout(timer);
   }, []);
 
-  // Calculate pupil position
-  const pupilOffsetX = mousePosition.x * 12;
-  const pupilOffsetY = mousePosition.y * 8;
+  // Cleanup audio on unmount
+  useEffect(() => {
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current = null;
+      }
+    };
+  }, []);
 
+  // Calculate pupil position - shift left when in voice mode on desktop
+  const basePupilOffsetX = eyesShifted ? -15 : mousePosition.x * 12;
+  const basePupilOffsetY = eyesShifted ? 0 : mousePosition.y * 8;
+  const pupilOffsetX = basePupilOffsetX;
+  const pupilOffsetY = basePupilOffsetY;
+
+  // Play TTS audio
+  const playTTS = useCallback(async (text: string) => {
+    try {
+      const ttsResponse = await fetch('/api/tts', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text }),
+      });
+
+      if (!ttsResponse.ok) {
+        console.error('TTS failed');
+        setChatState('idle');
+        return;
+      }
+
+      const audioBlob = await ttsResponse.blob();
+      const audioUrl = URL.createObjectURL(audioBlob);
+
+      if (audioRef.current) {
+        audioRef.current.pause();
+      }
+
+      audioRef.current = new Audio(audioUrl);
+      audioRef.current.onended = () => {
+        setChatState('idle');
+        setEyesShifted(false);
+        URL.revokeObjectURL(audioUrl);
+      };
+      audioRef.current.onerror = () => {
+        setChatState('idle');
+        setEyesShifted(false);
+      };
+
+      await audioRef.current.play();
+    } catch (error) {
+      console.error('TTS error:', error);
+      setChatState('idle');
+      setEyesShifted(false);
+    }
+  }, []);
+
+  // Send message to Rigsy API
+  const sendToRigsy = useCallback(async (message: string) => {
+    setChatState('processing');
+    setErrorMessage('');
+
+    try {
+      const chatResponse = await fetch('/api/rigsy-chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          message,
+          sessionId: sessionIdRef.current,
+        }),
+      });
+
+      const data = await chatResponse.json();
+
+      if (!chatResponse.ok) {
+        setErrorMessage(data.error || 'Something went wrong');
+        setChatState('idle');
+        return;
+      }
+
+      if (data.requiresSignup) {
+        setResponse(data.response);
+        setSessionCount(data.sessionCount || 0);
+        setShowSignupPrompt(true);
+        setChatState('signup');
+        // Still play the response
+        setChatState('speaking');
+        await playTTS(data.response);
+        setChatState('signup');
+        return;
+      }
+
+      setResponse(data.response);
+      setSessionCount(data.sessionCount || 0);
+
+      // Check if this is their last free question
+      if (data.isLastFreeQuestion) {
+        setShowSignupPrompt(true);
+      }
+
+      // Play the response via TTS
+      setChatState('speaking');
+      setEyesShifted(true); // Shift eyes on desktop when speaking
+      await playTTS(data.response);
+    } catch (error) {
+      console.error('Chat error:', error);
+      setErrorMessage('Failed to connect. Please try again.');
+      setChatState('idle');
+    }
+  }, [playTTS]);
+
+  // Start voice recognition
+  const startListening = useCallback(() => {
+    if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+      setErrorMessage('Voice recognition not supported in this browser');
+      return;
+    }
+
+    const SpeechRecognitionAPI = window.SpeechRecognition || window.webkitSpeechRecognition;
+    recognitionRef.current = new SpeechRecognitionAPI();
+
+    recognitionRef.current.continuous = false;
+    recognitionRef.current.interimResults = true;
+    recognitionRef.current.lang = 'en-US';
+
+    recognitionRef.current.onstart = () => {
+      setChatState('listening');
+      setTranscript('');
+      setErrorMessage('');
+      setIsAwake(true);
+    };
+
+    recognitionRef.current.onresult = (event: SpeechRecognitionEvent) => {
+      let finalTranscript = '';
+      let interimTranscript = '';
+
+      for (let i = event.resultIndex; i < event.results.length; i++) {
+        const transcript = event.results[i][0].transcript;
+        if (event.results[i].isFinal) {
+          finalTranscript += transcript;
+        } else {
+          interimTranscript += transcript;
+        }
+      }
+
+      setTranscript(finalTranscript || interimTranscript);
+
+      if (finalTranscript) {
+        sendToRigsy(finalTranscript);
+      }
+    };
+
+    recognitionRef.current.onerror = (event) => {
+      console.error('Speech recognition error:', event);
+      setChatState('idle');
+      setErrorMessage('Could not hear you. Please try again.');
+    };
+
+    recognitionRef.current.onend = () => {
+      if (chatState === 'listening' && !transcript) {
+        setChatState('idle');
+      }
+    };
+
+    recognitionRef.current.start();
+  }, [chatState, transcript, sendToRigsy]);
+
+  // Stop voice recognition
+  const stopListening = useCallback(() => {
+    if (recognitionRef.current) {
+      recognitionRef.current.stop();
+    }
+  }, []);
+
+  // Handle mic button click
   const handleMicClick = () => {
-    setIsListening(true);
-    setIsAwake(true);
-    // Simulate listening then responding
-    setTimeout(() => {
-      setIsListening(false);
-    }, 3000);
+    if (chatState === 'listening') {
+      stopListening();
+    } else if (chatState === 'idle' || chatState === 'signup') {
+      if (showSignupPrompt && chatState === 'signup') {
+        // Redirect to signup section if they've used all questions
+        document.getElementById('signup')?.scrollIntoView({ behavior: 'smooth' });
+        return;
+      }
+      startListening();
+    } else if (chatState === 'speaking') {
+      // Stop audio playback
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current = null;
+      }
+      setChatState('idle');
+      setEyesShifted(false);
+    }
   };
+
+  // Determine if we're in any active voice state
+  const isVoiceActive = chatState !== 'idle';
 
   // Eye dimensions constants
   const eyeR = 72;
@@ -199,10 +460,10 @@ export default function Hero() {
               <motion.div
                 animate={{
                   scale: [1, 1.08, 1],
-                  opacity: isListening ? [0.5, 0.8, 0.5] : [0.2, 0.35, 0.2],
+                  opacity: isVoiceActive ? [0.5, 0.8, 0.5] : [0.2, 0.35, 0.2],
                 }}
                 transition={{
-                  duration: isListening ? 1 : 4,
+                  duration: isVoiceActive ? 1 : 4,
                   repeat: Infinity,
                   ease: "easeInOut",
                 }}
@@ -344,10 +605,10 @@ export default function Hero() {
                             fill="#FF6B35"
                             filter="url(#mobileGlow)"
                             animate={{
-                              opacity: isListening ? [0.8, 1, 0.8] : 0.6,
-                              r: isListening ? [4, 6, 4] : 4
+                              opacity: isVoiceActive ? [0.8, 1, 0.8] : 0.6,
+                              r: isVoiceActive ? [4, 6, 4] : 4
                             }}
-                            transition={{ duration: 0.5, repeat: isListening ? Infinity : 0 }}
+                            transition={{ duration: 0.5, repeat: isVoiceActive ? Infinity : 0 }}
                           />
                         </svg>
 
@@ -481,52 +742,124 @@ export default function Hero() {
                         fill="#FF6B35"
                         filter="url(#heroGlow)"
                         animate={{
-                          opacity: isListening ? [0.8, 1, 0.8] : 0.6,
-                          r: isListening ? [6, 10, 6] : 6
+                          opacity: isVoiceActive ? [0.8, 1, 0.8] : 0.6,
+                          r: isVoiceActive ? [6, 10, 6] : 6
                         }}
-                        transition={{ duration: 0.5, repeat: isListening ? Infinity : 0 }}
+                        transition={{ duration: 0.5, repeat: isVoiceActive ? Infinity : 0 }}
                       />
                     </svg>
                   </div>
 
-                  {/* Hey Rigsy Button */}
-                  <div className="absolute bottom-2 sm:bottom-4 left-1/2 -translate-x-1/2 z-30">
+                  {/* Voice Interaction UI */}
+                  <div className="absolute bottom-2 sm:bottom-4 left-1/2 -translate-x-1/2 z-30 flex flex-col items-center gap-2">
+                    {/* Transcript/Response Display */}
+                    <AnimatePresence mode="wait">
+                      {(transcript || response || errorMessage) && chatState !== 'idle' && (
+                        <motion.div
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -10 }}
+                          className="bg-[#161B22]/95 backdrop-blur-sm px-3 py-2 rounded-lg border border-[#21262D] max-w-[200px] sm:max-w-xs text-center"
+                        >
+                          {errorMessage ? (
+                            <p className="text-xs text-red-400">{errorMessage}</p>
+                          ) : chatState === 'listening' && transcript ? (
+                            <p className="text-xs text-[#8B949E] italic">&quot;{transcript}&quot;</p>
+                          ) : (chatState === 'speaking' || chatState === 'signup') && response ? (
+                            <p className="text-xs text-[#F0F3F6]">{response}</p>
+                          ) : chatState === 'processing' ? (
+                            <p className="text-xs text-[#8B949E]">Thinking...</p>
+                          ) : null}
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+
+                    {/* Hey Rigsy Button */}
                     <motion.button
                       onClick={handleMicClick}
-                      aria-label={isListening ? "Stop listening to voice input" : "Activate Rigsy voice assistant"}
-                      aria-pressed={isListening}
+                      disabled={chatState === 'processing'}
+                      aria-label={
+                        chatState === 'listening' ? "Stop listening" :
+                        chatState === 'speaking' ? "Stop speaking" :
+                        chatState === 'processing' ? "Processing your question" :
+                        chatState === 'signup' ? "Join the waitlist" :
+                        "Activate Rigsy voice assistant"
+                      }
+                      aria-pressed={chatState === 'listening'}
                       className={`flex items-center gap-2 sm:gap-3 px-4 sm:px-6 py-2 sm:py-3 rounded-full transition-all shadow-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#0D1117] ${
-                        isListening
+                        chatState === 'listening'
                           ? "bg-[#FF6B35] text-white"
+                          : chatState === 'speaking'
+                          ? "bg-[#4B5EAA] text-white"
+                          : chatState === 'processing'
+                          ? "bg-[#21262D] text-[#8B949E] cursor-wait"
+                          : chatState === 'signup'
+                          ? "bg-[#3FB950] text-white"
                           : "bg-[#161B22]/90 backdrop-blur-sm border border-[#21262D] text-[#F0F3F6] hover:border-[#FF6B35]"
                       }`}
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
+                      whileHover={chatState !== 'processing' ? { scale: 1.05 } : {}}
+                      whileTap={chatState !== 'processing' ? { scale: 0.95 } : {}}
                     >
                       <motion.div
-                        animate={isListening ? { scale: [1, 1.2, 1] } : {}}
-                        transition={{ duration: 0.5, repeat: isListening ? Infinity : 0 }}
+                        animate={chatState === 'listening' || chatState === 'speaking' ? { scale: [1, 1.2, 1] } : {}}
+                        transition={{ duration: 0.5, repeat: chatState === 'listening' || chatState === 'speaking' ? Infinity : 0 }}
                         aria-hidden="true"
                       >
-                        <svg
-                          className={`w-4 h-4 sm:w-5 sm:h-5 ${isListening ? "text-white" : "text-[#FF6B35]"}`}
-                          fill="none"
-                          viewBox="0 0 24 24"
-                          stroke="currentColor"
-                          aria-hidden="true"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"
-                          />
-                        </svg>
+                        {chatState === 'speaking' ? (
+                          <svg
+                            className="w-4 h-4 sm:w-5 sm:h-5 text-white"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            aria-hidden="true"
+                          >
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+                          </svg>
+                        ) : chatState === 'processing' ? (
+                          <svg
+                            className="w-4 h-4 sm:w-5 sm:h-5 text-[#8B949E] animate-spin"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            aria-hidden="true"
+                          >
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                          </svg>
+                        ) : chatState === 'signup' ? (
+                          <svg
+                            className="w-4 h-4 sm:w-5 sm:h-5 text-white"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            aria-hidden="true"
+                          >
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+                          </svg>
+                        ) : (
+                          <svg
+                            className={`w-4 h-4 sm:w-5 sm:h-5 ${chatState === 'listening' ? "text-white" : "text-[#FF6B35]"}`}
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            aria-hidden="true"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"
+                            />
+                          </svg>
+                        )}
                       </motion.div>
                       <span className="font-semibold text-xs sm:text-sm">
-                        {isListening ? "Listening..." : "Hey Rigsy"}
+                        {chatState === 'listening' ? "Listening..." :
+                         chatState === 'speaking' ? "Speaking..." :
+                         chatState === 'processing' ? "Thinking..." :
+                         chatState === 'signup' ? "Join Waitlist" :
+                         "Hey Rigsy"}
                       </span>
-                      {isListening && (
+                      {chatState === 'listening' && (
                         <div className="flex items-center gap-0.5 ml-1" aria-hidden="true">
                           {[...Array(3)].map((_, i) => (
                             <motion.div
@@ -544,9 +877,22 @@ export default function Hero() {
                       )}
                       {/* Screen reader announcement for state changes */}
                       <span className="sr-only" aria-live="polite">
-                        {isListening ? "Voice assistant is now listening" : ""}
+                        {chatState === 'listening' ? "Voice assistant is now listening" :
+                         chatState === 'speaking' ? "Rigsy is speaking" :
+                         chatState === 'processing' ? "Processing your question" : ""}
                       </span>
                     </motion.button>
+
+                    {/* Session counter */}
+                    {sessionCount > 0 && sessionCount < 3 && chatState === 'idle' && (
+                      <motion.p
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        className="text-[10px] text-[#6E7681]"
+                      >
+                        {3 - sessionCount} question{3 - sessionCount !== 1 ? 's' : ''} left in demo
+                      </motion.p>
+                    )}
                   </div>
 
                       {/* Subtle grid overlay */}
