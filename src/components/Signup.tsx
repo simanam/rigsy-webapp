@@ -57,11 +57,11 @@ export default function Signup() {
   };
 
   return (
-    <section id="signup" aria-labelledby="signup-heading" className="py-24 bg-[#161B22] relative overflow-hidden">
+    <section id="signup" aria-labelledby="signup-heading" className="py-24 bg-[#F3F4F6] relative overflow-hidden">
       {/* Background effects */}
       <div className="absolute inset-0">
-        <div className="absolute top-1/2 left-1/2 w-[600px] h-[600px] bg-[#4B5EAA]/10 rounded-full blur-[128px] transform -translate-x-1/2 -translate-y-1/2" />
-        <div className="absolute bottom-0 right-0 w-96 h-96 bg-[#FF6B35]/10 rounded-full blur-[128px]" />
+        <div className="absolute top-1/2 left-1/2 w-[600px] h-[600px] bg-[#6366F1]/5 rounded-full blur-[128px] transform -translate-x-1/2 -translate-y-1/2" />
+        <div className="absolute bottom-0 right-0 w-96 h-96 bg-[#F97316]/5 rounded-full blur-[128px]" />
       </div>
 
       <div className="max-w-4xl mx-auto px-6 relative z-10">
@@ -69,13 +69,13 @@ export default function Signup() {
           <>
             {/* Header */}
             <div className="text-center mb-12">
-              <span className="inline-block px-4 py-1.5 rounded-full bg-[#3FB950]/20 text-[#3FB950] text-sm font-medium mb-4">
+              <span className="inline-block px-4 py-1.5 rounded-full bg-[#D1FAE5] text-[#10B981] text-sm font-medium mb-4">
                 Early Access
               </span>
-              <h2 id="signup-heading" className="text-4xl md:text-5xl font-bold text-[#F0F3F6] mb-4">
+              <h2 id="signup-heading" className="text-4xl md:text-5xl font-bold text-[#1F2937] mb-4">
                 Be First on the Road
               </h2>
-              <p className="text-xl text-[#8B949E] max-w-2xl mx-auto">
+              <p className="text-xl text-[#4B5563] max-w-2xl mx-auto">
                 Join the waitlist for early access. Help shape the future of
                 trucking while getting exclusive benefits.
               </p>
@@ -147,15 +147,15 @@ export default function Signup() {
               ].map((benefit, index) => (
                 <div
                   key={index}
-                  className="p-6 rounded-2xl bg-[#0D1117] border border-[#21262D] text-center"
+                  className="p-6 rounded-2xl bg-white border border-[#E5E7EB] shadow-sm text-center"
                 >
-                  <div className="w-12 h-12 rounded-xl bg-[#FF6B35]/10 text-[#FF6B35] flex items-center justify-center mx-auto mb-4" aria-hidden="true">
+                  <div className="w-12 h-12 rounded-xl bg-[#FFF7ED] text-[#F97316] flex items-center justify-center mx-auto mb-4" aria-hidden="true">
                     {benefit.icon}
                   </div>
-                  <h3 className="text-lg font-semibold text-[#F0F3F6] mb-2">
+                  <h3 className="text-lg font-semibold text-[#1F2937] mb-2">
                     {benefit.title}
                   </h3>
-                  <p className="text-sm text-[#8B949E]">{benefit.description}</p>
+                  <p className="text-sm text-[#4B5563]">{benefit.description}</p>
                 </div>
               ))}
             </div>
@@ -163,7 +163,7 @@ export default function Signup() {
             {/* Signup form */}
             <form
               onSubmit={handleSubmit}
-              className="max-w-lg mx-auto p-8 rounded-3xl bg-[#0D1117] border border-[#21262D]"
+              className="max-w-lg mx-auto p-8 rounded-3xl bg-white border border-[#E5E7EB] shadow-md"
               aria-label="Join the waitlist"
               noValidate
             >
@@ -171,7 +171,7 @@ export default function Signup() {
                 <div>
                   <label
                     htmlFor="email"
-                    className="block text-sm font-medium text-[#F0F3F6] mb-2"
+                    className="block text-sm font-medium text-[#1F2937] mb-2"
                   >
                     Email Address
                   </label>
@@ -191,18 +191,18 @@ export default function Signup() {
                       aria-required="true"
                       aria-invalid={email && !isValidEmail(email) ? "true" : "false"}
                       aria-describedby={email && !isValidEmail(email) ? "email-error" : undefined}
-                      className={`w-full px-4 py-3 rounded-xl bg-[#161B22] border text-[#F0F3F6] placeholder-[#6E7681] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FF6B35] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0D1117] ${
+                      className={`w-full px-4 py-3 rounded-xl bg-[#F9FAFB] border text-[#1F2937] placeholder-[#9CA3AF] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F97316] focus-visible:ring-offset-2 focus-visible:ring-offset-white ${
                         email && !isValidEmail(email)
                           ? "border-red-500"
                           : email && isValidEmail(email)
-                          ? "border-[#3FB950]"
-                          : "border-[#21262D]"
+                          ? "border-[#10B981]"
+                          : "border-[#E5E7EB]"
                       }`}
                     />
                     {email && (
                       <div className="absolute right-3 top-1/2 -translate-y-1/2" aria-hidden="true">
                         {isValidEmail(email) ? (
-                          <svg className="w-5 h-5 text-[#3FB950]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <svg className="w-5 h-5 text-[#10B981]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                           </svg>
                         ) : (
@@ -223,7 +223,7 @@ export default function Signup() {
                 <div>
                   <label
                     htmlFor="role"
-                    className="block text-sm font-medium text-[#F0F3F6] mb-2"
+                    className="block text-sm font-medium text-[#1F2937] mb-2"
                   >
                     I am a...
                   </label>
@@ -234,7 +234,7 @@ export default function Signup() {
                     onChange={(e) => setRole(e.target.value)}
                     required
                     aria-required="true"
-                    className="w-full px-4 py-3 rounded-xl bg-[#161B22] border border-[#21262D] text-[#F0F3F6] transition-colors appearance-none cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FF6B35] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0D1117]"
+                    className="w-full px-4 py-3 rounded-xl bg-[#F9FAFB] border border-[#E5E7EB] text-[#1F2937] transition-colors appearance-none cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F97316] focus-visible:ring-offset-2 focus-visible:ring-offset-white"
                   >
                     <option value="" disabled>
                       Select your role
@@ -251,7 +251,7 @@ export default function Signup() {
                   type="submit"
                   disabled={loading}
                   aria-busy={loading}
-                  className="w-full py-4 bg-[#FF6B35] hover:bg-[#FF8255] text-[#0D1117] font-semibold rounded-xl transition-all transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 glow-orange focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FF6B35] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0D1117]"
+                  className="w-full py-4 bg-[#F97316] hover:bg-[#FB923C] text-white font-semibold rounded-xl transition-all transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 shadow-lg hover:shadow-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F97316] focus-visible:ring-offset-2 focus-visible:ring-offset-white"
                 >
                   {loading ? (
                     <>
@@ -291,7 +291,7 @@ export default function Signup() {
                 )}
               </div>
 
-              <p className="text-xs text-[#6E7681] text-center mt-4">
+              <p className="text-xs text-[#9CA3AF] text-center mt-4">
                 No spam, ever. We&apos;ll only email you about Rigsy updates.
               </p>
             </form>
@@ -299,9 +299,9 @@ export default function Signup() {
         ) : (
           /* Success state */
           <div className="text-center py-12" role="status" aria-live="polite">
-            <div className="w-20 h-20 rounded-full bg-[#3FB950]/20 flex items-center justify-center mx-auto mb-6" aria-hidden="true">
+            <div className="w-20 h-20 rounded-full bg-[#D1FAE5] flex items-center justify-center mx-auto mb-6" aria-hidden="true">
               <svg
-                className="w-10 h-10 text-[#3FB950]"
+                className="w-10 h-10 text-[#10B981]"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -315,19 +315,19 @@ export default function Signup() {
                 />
               </svg>
             </div>
-            <h2 id="signup-heading" className="text-3xl md:text-4xl font-bold text-[#F0F3F6] mb-4">
+            <h2 id="signup-heading" className="text-3xl md:text-4xl font-bold text-[#1F2937] mb-4">
               You&apos;re on the List!
             </h2>
-            <p className="text-xl text-[#8B949E] max-w-md mx-auto mb-8">
+            <p className="text-xl text-[#4B5563] max-w-md mx-auto mb-8">
               Thanks for joining, driver. We&apos;ll be in touch soon with early
               access details.
             </p>
-            <div className="inline-flex items-center gap-3 px-6 py-3 rounded-2xl bg-[#161B22] border border-[#21262D]">
-              <span className="text-[#FF6B35]">&ldquo;</span>
-              <span className="text-[#F0F3F6] italic">
+            <div className="inline-flex items-center gap-3 px-6 py-3 rounded-2xl bg-white border border-[#E5E7EB] shadow-sm">
+              <span className="text-[#F97316]">&ldquo;</span>
+              <span className="text-[#1F2937] italic">
                 See you on the road, driver.
               </span>
-              <span className="text-[#FF6B35]">&rdquo;</span>
+              <span className="text-[#F97316]">&rdquo;</span>
             </div>
           </div>
         )}

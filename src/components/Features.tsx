@@ -1109,17 +1109,17 @@ export default function Features() {
   ];
 
   return (
-    <section id="features" aria-labelledby="features-heading" className="py-16 sm:py-24 bg-[#161B22]">
+    <section id="features" aria-labelledby="features-heading" className="py-16 sm:py-24 bg-[#F3F4F6]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         {/* Section header */}
         <div className="text-center mb-10 sm:mb-16">
-          <span className="inline-block px-3 sm:px-4 py-1 sm:py-1.5 rounded-full bg-[#4B5EAA]/20 text-[#58A6FF] text-xs sm:text-sm font-medium mb-3 sm:mb-4">
+          <span className="inline-block px-3 sm:px-4 py-1 sm:py-1.5 rounded-full bg-[#6366F1]/10 text-[#6366F1] text-xs sm:text-sm font-medium mb-3 sm:mb-4">
             Features
           </span>
-          <h2 id="features-heading" className="text-2xl sm:text-4xl md:text-5xl font-bold text-[#F0F3F6] mb-3 sm:mb-4">
+          <h2 id="features-heading" className="text-2xl sm:text-4xl md:text-5xl font-bold text-[#1F2937] mb-3 sm:mb-4">
             Everything a Driver Needs
           </h2>
-          <p className="text-base sm:text-xl text-[#8B949E] max-w-2xl mx-auto">
+          <p className="text-base sm:text-xl text-[#4B5563] max-w-2xl mx-auto">
             Six powerful AI modules working together as your personal road
             companion
           </p>
@@ -1136,18 +1136,18 @@ export default function Features() {
               transition={{ duration: 0.6, delay: index * 0.1 }}
               className={`flex flex-col ${
                 index % 2 === 0 ? "lg:flex-row" : "lg:flex-row-reverse"
-              } gap-6 sm:gap-8 p-4 sm:p-8 rounded-2xl sm:rounded-3xl bg-[#0D1117] border border-[#21262D] hover:border-[#4B5EAA]/30 transition-all`}
+              } gap-6 sm:gap-8 p-4 sm:p-8 rounded-2xl sm:rounded-3xl bg-white border border-[#E5E7EB] shadow-sm hover:shadow-md hover:border-[#6366F1]/30 transition-all`}
             >
               {/* Content side */}
               <div className="flex-1 flex flex-col justify-center">
-                <span className="inline-block w-fit px-2.5 sm:px-3 py-1 rounded-full bg-[#21262D] text-[#8B949E] text-[10px] sm:text-xs font-medium uppercase tracking-wider mb-3 sm:mb-4">
+                <span className="inline-block w-fit px-2.5 sm:px-3 py-1 rounded-full bg-[#F3F4F6] text-[#4B5563] text-[10px] sm:text-xs font-medium uppercase tracking-wider mb-3 sm:mb-4">
                   {feature.category}
                 </span>
-                <h3 className="text-xl sm:text-3xl font-bold text-[#F0F3F6] mb-1.5 sm:mb-2">
+                <h3 className="text-xl sm:text-3xl font-bold text-[#1F2937] mb-1.5 sm:mb-2">
                   {feature.title}
                 </h3>
-                <p className="text-sm sm:text-lg text-[#FF6B35] mb-3 sm:mb-4">{feature.tagline}</p>
-                <p className="text-sm sm:text-base text-[#8B949E] mb-4 sm:mb-6 leading-relaxed">
+                <p className="text-sm sm:text-lg text-[#F97316] mb-3 sm:mb-4">{feature.tagline}</p>
+                <p className="text-sm sm:text-base text-[#4B5563] mb-4 sm:mb-6 leading-relaxed">
                   {feature.description}
                 </p>
 
@@ -1156,7 +1156,7 @@ export default function Features() {
                   {feature.capabilities.map((cap, i) => (
                     <li key={i} className="flex items-center gap-2">
                       <svg
-                        className="w-4 h-4 sm:w-5 sm:h-5 text-[#3FB950] shrink-0"
+                        className="w-4 h-4 sm:w-5 sm:h-5 text-[#10B981] shrink-0"
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
@@ -1169,7 +1169,7 @@ export default function Features() {
                           d="M5 13l4 4L19 7"
                         />
                       </svg>
-                      <span className="text-[#F0F3F6] text-xs sm:text-sm">{cap}</span>
+                      <span className="text-[#1F2937] text-xs sm:text-sm">{cap}</span>
                     </li>
                   ))}
                 </ul>

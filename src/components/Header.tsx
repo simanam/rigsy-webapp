@@ -28,14 +28,14 @@ export default function Header() {
     }
   }, [mobileMenuOpen]);
 
-  const navLinkClasses = "text-[#8B949E] hover:text-[#F0F3F6] transition-colors rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FF6B35] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0D1117]";
+  const navLinkClasses = "text-[#4B5563] hover:text-[#1F2937] transition-colors rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F97316] focus-visible:ring-offset-2 focus-visible:ring-offset-white";
 
   return (
     <header
       role="banner"
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
-          ? "bg-[#0D1117]/90 backdrop-blur-md border-b border-[#21262D]"
+          ? "bg-white/90 backdrop-blur-md border-b border-[#E5E7EB] shadow-sm"
           : "bg-transparent"
       }`}
     >
@@ -43,7 +43,7 @@ export default function Header() {
         <a
           href="#"
           aria-label="Rigsy - Return to top of page"
-          className="rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FF6B35] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0D1117]"
+          className="rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F97316] focus-visible:ring-offset-2 focus-visible:ring-offset-white"
         >
           <RigsyLogo size={36} variant="full" />
         </a>
@@ -61,7 +61,7 @@ export default function Header() {
           </a>
           <a
             href="#signup"
-            className="px-5 py-2.5 bg-[#FF6B35] hover:bg-[#FF8255] text-[#0D1117] font-semibold rounded-full transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FF6B35] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0D1117]"
+            className="px-5 py-2.5 bg-[#F97316] hover:bg-[#FB923C] text-white font-semibold rounded-full transition-colors shadow-md hover:shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F97316] focus-visible:ring-offset-2 focus-visible:ring-offset-white"
           >
             Get Early Access
           </a>
@@ -70,14 +70,14 @@ export default function Header() {
         {/* Mobile Menu Button */}
         <button
           type="button"
-          className="md:hidden p-2 rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FF6B35] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0D1117]"
+          className="md:hidden p-2 rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F97316] focus-visible:ring-offset-2 focus-visible:ring-offset-white"
           aria-expanded={mobileMenuOpen}
           aria-controls="mobile-menu"
           aria-label={mobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
         >
           <svg
-            className="w-6 h-6 text-[#F0F3F6]"
+            className="w-6 h-6 text-[#1F2937]"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -96,7 +96,7 @@ export default function Header() {
       {mobileMenuOpen && (
         <nav
           id="mobile-menu"
-          className="md:hidden bg-[#0D1117]/95 backdrop-blur-md border-t border-[#21262D]"
+          className="md:hidden bg-white/95 backdrop-blur-md border-t border-[#E5E7EB]"
           aria-label="Mobile navigation"
         >
           <div className="max-w-7xl mx-auto px-6 py-4 flex flex-col gap-4">
@@ -123,7 +123,7 @@ export default function Header() {
             </a>
             <a
               href="#signup"
-              className="px-5 py-3 bg-[#FF6B35] hover:bg-[#FF8255] text-[#0D1117] font-semibold rounded-full transition-colors text-center focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FF6B35] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0D1117]"
+              className="px-5 py-3 bg-[#F97316] hover:bg-[#FB923C] text-white font-semibold rounded-full transition-colors text-center shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F97316] focus-visible:ring-offset-2 focus-visible:ring-offset-white"
               onClick={() => setMobileMenuOpen(false)}
             >
               Get Early Access

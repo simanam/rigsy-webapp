@@ -91,17 +91,17 @@ export default function HowItWorks() {
   ];
 
   return (
-    <section id="how-it-works" aria-labelledby="how-it-works-heading" className="py-24 bg-[#0D1117]">
+    <section id="how-it-works" aria-labelledby="how-it-works-heading" className="py-24 bg-white">
       <div className="max-w-7xl mx-auto px-6">
         {/* Section header */}
         <div className="text-center mb-16">
-          <span className="inline-block px-4 py-1.5 rounded-full bg-[#FF6B35]/20 text-[#FF6B35] text-sm font-medium mb-4">
+          <span className="inline-block px-4 py-1.5 rounded-full bg-[#FFF7ED] text-[#F97316] text-sm font-medium mb-4">
             How It Works
           </span>
-          <h2 id="how-it-works-heading" className="text-4xl md:text-5xl font-bold text-[#F0F3F6] mb-4">
+          <h2 id="how-it-works-heading" className="text-4xl md:text-5xl font-bold text-[#1F2937] mb-4">
             Up and Running in Minutes
           </h2>
-          <p className="text-xl text-[#8B949E] max-w-2xl mx-auto">
+          <p className="text-xl text-[#4B5563] max-w-2xl mx-auto">
             No complicated setup. No learning curve. Just mount your phone and
             start talking.
           </p>
@@ -110,28 +110,28 @@ export default function HowItWorks() {
         {/* Steps */}
         <div className="relative">
           {/* Connection line */}
-          <div className="hidden lg:block absolute top-1/2 left-0 right-0 h-0.5 bg-linear-to-r from-transparent via-[#21262D] to-transparent transform -translate-y-1/2" aria-hidden="true" />
+          <div className="hidden lg:block absolute top-1/2 left-0 right-0 h-0.5 bg-linear-to-r from-transparent via-[#E5E7EB] to-transparent transform -translate-y-1/2" aria-hidden="true" />
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {steps.map((step, index) => (
               <div key={index} className="relative">
                 {/* Step card */}
-                <div className="p-6 rounded-2xl bg-[#161B22] border border-[#21262D] hover:border-[#4B5EAA]/50 transition-all h-full">
+                <div className="p-6 rounded-2xl bg-[#F9FAFB] border border-[#E5E7EB] hover:border-[#6366F1]/30 hover:shadow-md transition-all h-full">
                   {/* Number badge */}
-                  <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-linear-to-br from-[#4B5EAA] to-[#FF6B35] text-white font-bold text-lg mb-4" aria-hidden="true">
+                  <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-linear-to-br from-[#6366F1] to-[#F97316] text-white font-bold text-lg mb-4" aria-hidden="true">
                     {step.number}
                   </div>
 
                   {/* Icon */}
-                  <div className="p-3 rounded-xl bg-[#21262D] text-[#FF6B35] w-fit mb-4">
+                  <div className="p-3 rounded-xl bg-[#FFF7ED] text-[#F97316] w-fit mb-4">
                     {step.icon}
                   </div>
 
                   {/* Content */}
-                  <h3 className="text-xl font-semibold text-[#F0F3F6] mb-2">
+                  <h3 className="text-xl font-semibold text-[#1F2937] mb-2">
                     {step.title}
                   </h3>
-                  <p className="text-[#8B949E] leading-relaxed">
+                  <p className="text-[#4B5563] leading-relaxed">
                     {step.description}
                   </p>
                 </div>
@@ -140,7 +140,7 @@ export default function HowItWorks() {
                 {index < steps.length - 1 && (
                   <div className="hidden lg:block absolute top-1/2 -right-4 transform -translate-y-1/2 z-10" aria-hidden="true">
                     <svg
-                      className="w-8 h-8 text-[#4B5EAA]"
+                      className="w-8 h-8 text-[#6366F1]"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"

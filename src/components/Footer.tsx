@@ -1,10 +1,10 @@
 import RigsyLogo from "./RigsyLogo";
 
 export default function Footer() {
-  const footerLinkClasses = "text-[#8B949E] hover:text-[#F0F3F6] transition-colors text-sm rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FF6B35] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0D1117]";
+  const footerLinkClasses = "text-[#4B5563] hover:text-[#1F2937] transition-colors text-sm rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F97316] focus-visible:ring-offset-2 focus-visible:ring-offset-white";
 
   return (
-    <footer className="py-16 bg-[#0D1117] border-t border-[#21262D]" role="contentinfo">
+    <footer className="py-16 bg-white border-t border-[#E5E7EB]" role="contentinfo">
       <div className="max-w-7xl mx-auto px-6">
         <div className="flex flex-col md:flex-row items-center justify-between gap-8">
           {/* Brand */}
@@ -12,11 +12,11 @@ export default function Footer() {
             <a
               href="#"
               aria-label="Rigsy - Return to top of page"
-              className="mb-4 rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FF6B35] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0D1117]"
+              className="mb-4 rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F97316] focus-visible:ring-offset-2 focus-visible:ring-offset-white"
             >
               <RigsyLogo size={36} variant="full" />
             </a>
-            <p className="text-sm text-[#8B949E] text-center md:text-left max-w-xs">
+            <p className="text-sm text-[#4B5563] text-center md:text-left max-w-xs">
               You run the rig. Rigsy runs the rest.
             </p>
           </div>
@@ -59,19 +59,19 @@ export default function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="mt-12 pt-8 border-t border-[#21262D] flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-sm text-[#6E7681]">
+        <div className="mt-12 pt-8 border-t border-[#E5E7EB] flex flex-col md:flex-row items-center justify-between gap-4">
+          <p className="text-sm text-[#9CA3AF]">
             &copy; {new Date().getFullYear()} Logixtecs Solutions LLC. All rights
             reserved.
           </p>
           <div className="flex items-center gap-6">
             <a
               href="/accessibility"
-              className="text-sm text-[#6E7681] hover:text-[#F0F3F6] transition-colors rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FF6B35] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0D1117]"
+              className="text-sm text-[#9CA3AF] hover:text-[#1F2937] transition-colors rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F97316] focus-visible:ring-offset-2 focus-visible:ring-offset-white"
             >
               Accessibility
             </a>
-            <p className="text-sm text-[#6E7681]">
+            <p className="text-sm text-[#9CA3AF]">
               Built for the drivers who keep America moving.
             </p>
           </div>

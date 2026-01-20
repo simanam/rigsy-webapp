@@ -448,10 +448,11 @@ export default function Hero() {
       aria-label="Hero - Your Voice, Your Rig, Your Rules"
       className="relative min-h-screen flex items-center justify-center overflow-hidden pt-16 sm:pt-20"
     >
-      {/* Background gradient effects */}
+      {/* Background gradient effects - light theme */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-1/4 left-1/4 w-64 sm:w-96 h-64 sm:h-96 bg-[#4B5EAA]/20 rounded-full blur-[128px]" />
-        <div className="absolute bottom-1/4 right-1/4 w-64 sm:w-96 h-64 sm:h-96 bg-[#FF6B35]/15 rounded-full blur-[128px]" />
+        <div className="absolute top-1/4 left-1/4 w-64 sm:w-96 h-64 sm:h-96 bg-[#6366F1]/10 rounded-full blur-[128px]" />
+        <div className="absolute bottom-1/4 right-1/4 w-64 sm:w-96 h-64 sm:h-96 bg-[#F97316]/10 rounded-full blur-[128px]" />
+        <div className="absolute top-1/2 right-1/3 w-48 sm:w-72 h-48 sm:h-72 bg-[#10B981]/8 rounded-full blur-[100px]" />
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-12">
@@ -468,10 +469,10 @@ export default function Hero() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-[#161B22] border border-[#21262D]"
+              className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-white border border-[#E5E7EB] shadow-sm"
             >
-              <span className="w-2 h-2 rounded-full bg-[#3FB950] animate-pulse" />
-              <span className="text-xs sm:text-sm text-[#8B949E]">
+              <span className="w-2 h-2 rounded-full bg-[#10B981] animate-pulse" />
+              <span className="text-xs sm:text-sm text-[#4B5563]">
                 Now accepting early access signups
               </span>
             </motion.div>
@@ -481,7 +482,7 @@ export default function Hero() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.3 }}
-              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-[#F0F3F6] leading-[1.1]"
+              className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-[#1F2937] leading-[1.1]"
             >
               Your Voice. Your Rig.
               <br />
@@ -493,7 +494,7 @@ export default function Hero() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
-              className="text-base sm:text-lg md:text-xl text-[#8B949E] max-w-xl mx-auto lg:mx-0"
+              className="text-base sm:text-lg md:text-xl text-[#4B5563] max-w-xl mx-auto lg:mx-0"
             >
               Ditch the tablet dance. Rigsy is a voice-first AI companion that
               handles ELD compliance, health coaching, and keeps you company on
@@ -509,13 +510,13 @@ export default function Hero() {
             >
               <button
                 onClick={handleWaitlistClick}
-                className="px-6 sm:px-8 py-3 sm:py-4 bg-[#FF6B35] hover:bg-[#FF8255] text-[#0D1117] font-semibold rounded-full transition-all transform hover:scale-105 glow-orange text-base sm:text-lg w-full sm:w-auto text-center focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FF6B35] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0D1117]"
+                className="px-6 sm:px-8 py-3 sm:py-4 bg-[#F97316] hover:bg-[#FB923C] text-white font-semibold rounded-full transition-all transform hover:scale-105 shadow-lg hover:shadow-xl text-base sm:text-lg w-full sm:w-auto text-center focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F97316] focus-visible:ring-offset-2 focus-visible:ring-offset-white"
               >
                 Join the Waitlist
               </button>
               <a
                 href="#features"
-                className="px-6 sm:px-8 py-3 sm:py-4 border border-[#21262D] hover:border-[#4B5EAA] text-[#F0F3F6] font-semibold rounded-full transition-all text-base sm:text-lg w-full sm:w-auto text-center focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FF6B35] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0D1117]"
+                className="px-6 sm:px-8 py-3 sm:py-4 border border-[#E5E7EB] hover:border-[#6366F1] text-[#1F2937] font-semibold rounded-full transition-all text-base sm:text-lg w-full sm:w-auto text-center hover:bg-[#EEF2FF] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F97316] focus-visible:ring-offset-2 focus-visible:ring-offset-white"
               >
                 See Features
               </a>
@@ -530,22 +531,22 @@ export default function Hero() {
               aria-label="Key features"
             >
               <li className="flex items-center gap-2">
-                <svg className="w-4 sm:w-5 h-4 sm:h-5 text-[#3FB950]" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                <svg className="w-4 sm:w-5 h-4 sm:h-5 text-[#10B981]" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                 </svg>
-                <span className="text-xs sm:text-sm text-[#8B949E]">Voice-First</span>
+                <span className="text-xs sm:text-sm text-[#4B5563]">Voice-First</span>
               </li>
               <li className="flex items-center gap-2">
-                <svg className="w-4 sm:w-5 h-4 sm:h-5 text-[#3FB950]" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                <svg className="w-4 sm:w-5 h-4 sm:h-5 text-[#10B981]" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                 </svg>
-                <span className="text-xs sm:text-sm text-[#8B949E]">ELD Integration</span>
+                <span className="text-xs sm:text-sm text-[#4B5563]">ELD Integration</span>
               </li>
               <li className="flex items-center gap-2">
-                <svg className="w-4 sm:w-5 h-4 sm:h-5 text-[#3FB950]" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                <svg className="w-4 sm:w-5 h-4 sm:h-5 text-[#10B981]" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                 </svg>
-                <span className="text-xs sm:text-sm text-[#8B949E]">Works Offline</span>
+                <span className="text-xs sm:text-sm text-[#4B5563]">Works Offline</span>
               </li>
             </motion.ul>
           </motion.div>
@@ -576,7 +577,7 @@ export default function Hero() {
                   repeat: Infinity,
                   ease: "easeInOut",
                 }}
-                className="absolute -inset-4 sm:-inset-6 bg-linear-to-r from-[#4B5EAA] via-[#FF6B35] to-[#4B5EAA] rounded-2xl sm:rounded-4xl blur-2xl sm:blur-3xl"
+                className="absolute -inset-4 sm:-inset-6 bg-linear-to-r from-[#6366F1] via-[#F97316] to-[#6366F1] rounded-2xl sm:rounded-4xl blur-2xl sm:blur-3xl"
               />
 
               {/* Dashboard Background with Road View */}

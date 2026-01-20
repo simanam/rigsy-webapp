@@ -23,7 +23,7 @@ export default function Stats() {
   ];
 
   return (
-    <section className="py-16 bg-[#161B22]" aria-labelledby="stats-heading">
+    <section className="py-16 bg-white" aria-labelledby="stats-heading">
       <h2 id="stats-heading" className="sr-only">Industry Statistics</h2>
       <div className="max-w-7xl mx-auto px-6">
         <dl className="grid grid-cols-2 md:grid-cols-4 gap-8">
@@ -32,8 +32,8 @@ export default function Stats() {
               <dd className="text-4xl md:text-5xl font-bold text-gradient mb-2">
                 {stat.value}
               </dd>
-              <dt className="text-[#F0F3F6] font-medium mb-1">{stat.label}</dt>
-              <dd className="text-sm text-[#6E7681]">{stat.sublabel}</dd>
+              <dt className="text-[#1F2937] font-medium mb-1">{stat.label}</dt>
+              <dd className="text-sm text-[#9CA3AF]">{stat.sublabel}</dd>
             </div>
           ))}
         </dl>

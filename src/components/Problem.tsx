@@ -95,14 +95,14 @@ export default function Problem() {
   ];
 
   return (
-    <section id="problem" aria-labelledby="problem-heading" className="py-24 bg-[#0D1117]">
+    <section id="problem" aria-labelledby="problem-heading" className="py-24 bg-[#FAFBFC]">
       <div className="max-w-7xl mx-auto px-6">
         {/* Section header */}
         <div className="text-center mb-16">
-          <h2 id="problem-heading" className="text-4xl md:text-5xl font-bold text-[#F0F3F6] mb-4">
+          <h2 id="problem-heading" className="text-4xl md:text-5xl font-bold text-[#1F2937] mb-4">
             You Run a Business from a Cab
           </h2>
-          <p className="text-xl text-[#8B949E] max-w-2xl mx-auto">
+          <p className="text-xl text-[#4B5563] max-w-2xl mx-auto">
             3.5 million drivers face daily challenges that most apps ignore.
             Where&apos;s your backup?
           </p>
@@ -113,25 +113,25 @@ export default function Problem() {
           {problems.map((problem, index) => (
             <div
               key={index}
-              className="p-8 rounded-2xl bg-[#161B22] border border-[#21262D] hover:border-[#4B5EAA]/50 transition-all group"
+              className="p-8 rounded-2xl bg-white border border-[#E5E7EB] shadow-sm hover:shadow-md hover:border-[#6366F1]/30 transition-all group"
             >
               <div className="flex items-start gap-4">
-                <div className="p-3 rounded-xl bg-[#F85149]/10 text-[#F85149] group-hover:bg-[#F85149]/20 transition-colors">
+                <div className="p-3 rounded-xl bg-[#FEE2E2] text-[#EF4444] group-hover:bg-[#FECACA] transition-colors">
                   {problem.icon}
                 </div>
                 <div className="flex-1">
-                  <h3 className="text-xl font-semibold text-[#F0F3F6] mb-2">
+                  <h3 className="text-xl font-semibold text-[#1F2937] mb-2">
                     {problem.title}
                   </h3>
                   <div className="flex items-baseline gap-2 mb-3">
-                    <span className="text-3xl font-bold text-[#FF6B35]">
+                    <span className="text-3xl font-bold text-[#F97316]">
                       {problem.stat}
                     </span>
-                    <span className="text-sm text-[#8B949E]">
+                    <span className="text-sm text-[#4B5563]">
                       {problem.statLabel}
                     </span>
                   </div>
-                  <p className="text-[#8B949E] leading-relaxed">
+                  <p className="text-[#4B5563] leading-relaxed">
                     {problem.description}
                   </p>
                 </div>
@@ -142,8 +142,8 @@ export default function Problem() {
 
         {/* Transition statement */}
         <div className="mt-16 text-center">
-          <p className="text-2xl text-[#8B949E]">
-            <span className="text-[#F0F3F6] font-semibold">
+          <p className="text-2xl text-[#4B5563]">
+            <span className="text-[#1F2937] font-semibold">
               Drivers deserve better.
             </span>{" "}
             They need a co-pilot, not another app.

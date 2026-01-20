@@ -124,7 +124,7 @@ export default function WaitlistModal({ isOpen, onClose }: WaitlistModalProps) {
               {/* Close button */}
               <button
                 onClick={handleClose}
-                className="absolute top-4 right-4 p-2 text-[#8B949E] hover:text-[#F0F3F6] transition-colors rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FF6B35]"
+                className="absolute top-4 right-4 p-2 text-[#8B949E] hover:text-[#F0F3F6] transition-colors rounded-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F97316]"
                 aria-label="Close modal"
               >
                 <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -136,8 +136,8 @@ export default function WaitlistModal({ isOpen, onClose }: WaitlistModalProps) {
                 <div className="p-6 sm:p-8">
                   {/* Header */}
                   <div className="text-center mb-6">
-                    <div className="w-12 h-12 rounded-full bg-[#FF6B35]/20 flex items-center justify-center mx-auto mb-4">
-                      <svg className="w-6 h-6 text-[#FF6B35]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <div className="w-12 h-12 rounded-full bg-[#F97316]/20 flex items-center justify-center mx-auto mb-4">
+                      <svg className="w-6 h-6 text-[#F97316]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
                       </svg>
                     </div>
@@ -173,7 +173,7 @@ export default function WaitlistModal({ isOpen, onClose }: WaitlistModalProps) {
                           required
                           aria-required="true"
                           aria-invalid={email && !isValidEmail(email) ? "true" : "false"}
-                          className={`w-full px-4 py-3 rounded-xl bg-[#161B22] border text-[#F0F3F6] placeholder-[#6E7681] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FF6B35] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0D1117] ${
+                          className={`w-full px-4 py-3 rounded-xl bg-[#161B22] border text-[#F0F3F6] placeholder-[#6E7681] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F97316] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0D1117] ${
                             email && !isValidEmail(email)
                               ? "border-red-500"
                               : email && isValidEmail(email)
@@ -211,7 +211,7 @@ export default function WaitlistModal({ isOpen, onClose }: WaitlistModalProps) {
                         onChange={(e) => setRole(e.target.value)}
                         required
                         aria-required="true"
-                        className="w-full px-4 py-3 rounded-xl bg-[#161B22] border border-[#21262D] text-[#F0F3F6] transition-colors appearance-none cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FF6B35] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0D1117]"
+                        className="w-full px-4 py-3 rounded-xl bg-[#161B22] border border-[#21262D] text-[#F0F3F6] transition-colors appearance-none cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F97316] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0D1117]"
                       >
                         <option value="" disabled>
                           Select your role
@@ -228,7 +228,7 @@ export default function WaitlistModal({ isOpen, onClose }: WaitlistModalProps) {
                       type="submit"
                       disabled={loading}
                       aria-busy={loading}
-                      className="w-full py-3 bg-[#FF6B35] hover:bg-[#FF8255] text-[#0D1117] font-semibold rounded-xl transition-all transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FF6B35] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0D1117]"
+                      className="w-full py-3 bg-[#F97316] hover:bg-[#FB923C] text-white font-semibold rounded-xl transition-all transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F97316] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0D1117]"
                     >
                       {loading ? (
                         <span className="flex items-center justify-center gap-2">
@@ -270,7 +270,7 @@ export default function WaitlistModal({ isOpen, onClose }: WaitlistModalProps) {
                   </p>
                   <button
                     onClick={handleClose}
-                    className="px-6 py-3 bg-[#21262D] hover:bg-[#30363D] text-[#F0F3F6] font-medium rounded-xl transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FF6B35]"
+                    className="px-6 py-3 bg-[#21262D] hover:bg-[#30363D] text-[#F0F3F6] font-medium rounded-xl transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F97316]"
                   >
                     Got it!
                   </button>

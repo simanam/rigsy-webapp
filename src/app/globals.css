@@ -48,21 +48,27 @@
 }
 
 :root {
-  /* Rigsy Design System Colors */
-  --background: #0D1117;
-  --surface: #161B22;
-  --surface-elevated: #21262D;
-  --primary: #4B5EAA;
-  --primary-light: #5A6FBB;
-  --action: #FF6B35;
-  --action-hover: #FF8255;
-  --text-primary: #F0F3F6;
-  --text-secondary: #8B949E;
-  --text-tertiary: #6E7681;
-  --success: #3FB950;
-  --warning: #D29922;
-  --danger: #F85149;
-  --info: #58A6FF;
+  /* Rigsy Design System Colors - Light & Playful Theme */
+  --background: #FAFBFC;
+  --surface: #FFFFFF;
+  --surface-elevated: #F3F4F6;
+  --primary: #6366F1;
+  --primary-light: #818CF8;
+  --action: #F97316;
+  --action-hover: #FB923C;
+  --text-primary: #1F2937;
+  --text-secondary: #4B5563;
+  --text-tertiary: #9CA3AF;
+  --success: #10B981;
+  --warning: #F59E0B;
+  --danger: #EF4444;
+  --info: #3B82F6;
+
+  /* Additional light theme colors */
+  --card-border: #E5E7EB;
+  --card-shadow: rgba(0, 0, 0, 0.05);
+  --accent-soft: #EEF2FF;
+  --accent-warm: #FFF7ED;
 
   /* Spacing */
   --space-xs: 4px;
@@ -116,17 +122,24 @@ body {
   line-height: 1.6;
 }
 
-/* Custom scrollbar */
+/* Light theme specific styles */
+.light-card {
+  background: var(--surface);
+  border: 1px solid var(--card-border);
+  box-shadow: 0 1px 3px var(--card-shadow), 0 1px 2px -1px var(--card-shadow);
+}
+
+/* Custom scrollbar - Light theme */
 ::-webkit-scrollbar {
   width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--surface);
+  background: var(--surface-elevated);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--surface-elevated);
+  background: #D1D5DB;
   border-radius: 4px;
 }
 
@@ -134,13 +147,13 @@ body {
   background: var(--text-tertiary);
 }
 
-/* Glow effects */
+/* Glow effects - Light theme (subtle shadows) */
 .glow-orange {
-  box-shadow: 0 0 40px rgba(255, 107, 53, 0.3);
+  box-shadow: 0 4px 20px rgba(249, 115, 22, 0.15), 0 2px 8px rgba(249, 115, 22, 0.1);
 }
 
 .glow-indigo {
-  box-shadow: 0 0 40px rgba(75, 94, 170, 0.3);
+  box-shadow: 0 4px 20px rgba(99, 102, 241, 0.15), 0 2px 8px rgba(99, 102, 241, 0.1);
 }
 
 /* Text gradient */
@@ -168,6 +181,7 @@ body {
   position: relative;
   background: var(--surface);
   border-radius: var(--radius-lg);
+  border: 1px solid var(--card-border);
 }
 
 .gradient-border::before {
@@ -179,6 +193,7 @@ body {
   background-size: 200% 200%;
   animation: gradient-rotate 3s ease infinite;
   z-index: -1;
+  opacity: 0.6;
 }
 
 /* Pulse animation for waveform */
