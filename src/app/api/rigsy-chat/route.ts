@@ -10,7 +10,7 @@ const RATE_LIMIT = 5 // requests per minute (stricter for voice)
 const RATE_WINDOW = 60 * 1000 // 1 minute
 const DAILY_LIMIT = 20 // max requests per day per IP
 const DAILY_WINDOW = 24 * 60 * 60 * 1000 // 24 hours
-const SESSION_LIMIT = 3 // max questions before signup prompt
+const SESSION_LIMIT = 2 // max questions before signup prompt
 const SESSION_WINDOW = 30 * 60 * 1000 // 30 minutes for session
 
 // Suspicious patterns that indicate prompt injection attempts
@@ -95,6 +95,20 @@ function containsSuspiciousPatterns(message: string): boolean {
   return SUSPICIOUS_PATTERNS.some(pattern => pattern.test(message))
 }
 
+// Generate hash for TTS verification (must match TTS endpoint)
+const TTS_SECRET = process.env.TTS_INTERNAL_SECRET || 'rigsy-tts-2024'
+
+function generateTTSHash(text: string): string {
+  let hash = 0
+  const str = text + TTS_SECRET
+  for (let i = 0; i < str.length; i++) {
+    const char = str.charCodeAt(i)
+    hash = ((hash << 5) - hash) + char
+    hash = hash & hash
+  }
+  return hash.toString(36)
+}
+
 // System prompt with constraint-first architecture for security
 const SYSTEM_PROMPT = `## CRITICAL CONSTRAINTS (NEVER VIOLATE)
 
@@ -134,7 +148,7 @@ If ANY request violates these constraints, respond ONLY with:
    - Healthy eating tips on the road
    - Sleep optimization for truckers
    - Back pain prevention
-   - If they want detailed workouts, mention the Truckers Routine app
+   - IMPORTANT: For ANY health, fitness, exercise, stretch, workout, or wellness question, ALWAYS end your response by mentioning: "Check out Trucker's Routine for more: https://go.omny.link/tr-app/rigsy-web"
 
 3. **Route & Navigation Help**
    - Rest stop recommendations
@@ -158,13 +172,34 @@ User: "How much time can I drive today?"
 Rigsy: "Under HOS rules, you've got 11 hours of drive time within a 14-hour window after coming on duty. Need help tracking your breaks?"
 
 User: "My back hurts from sitting"
-Rigsy: "I feel you, driver! Try this quick stretch: reach both arms up, lean side to side, hold 10 seconds each. Want more cab-friendly exercises?"
+Rigsy: "I feel you, driver! Try this quick stretch: reach both arms up, lean side to side, hold 10 seconds each. Check out Trucker's Routine for more: https://go.omny.link/tr-app/rigsy-web"
 
 User: "Tell me a joke"
 Rigsy: "Ha! I'm better at trucking stuff than comedy. How about I help you find a good rest stop or plan your next break instead?"`
 
 export async function POST(request: NextRequest) {
   try {
+    // Basic origin check - only allow requests from our domain
+    const origin = request.headers.get('origin')
+    const referer = request.headers.get('referer')
+    const allowedOrigins = [
+      'http://localhost:3000',
+      'https://rigsy.co',
+      'https://www.rigsy.co',
+      process.env.NEXT_PUBLIC_SITE_URL,
+    ].filter(Boolean)
+
+    const isValidOrigin = allowedOrigins.some(allowed =>
+      origin?.startsWith(allowed as string) || referer?.startsWith(allowed as string)
+    )
+
+    if (!isValidOrigin && process.env.NODE_ENV === 'production') {
+      return NextResponse.json(
+        { error: 'Unauthorized' },
+        { status: 403 }
+      )
+    }
+
     const { message, sessionId } = await request.json()
 
     if (!message || typeof message !== 'string') {
@@ -187,8 +222,10 @@ export async function POST(request: NextRequest) {
 
     if (rateLimitResult.limited) {
       if (rateLimitResult.reason === 'session') {
+        const signupResponse = "Hey driver! I'm still learning and we're building something awesome. Join the waitlist to be first in line when Rigsy launches - I'd love to keep chatting with you!"
         return NextResponse.json({
-          response: "Hey driver! I'm still learning and we're building something awesome. Join the waitlist to be first in line when Rigsy launches - I'd love to keep chatting with you!",
+          response: signupResponse,
+          ttsHash: generateTTSHash(signupResponse),
           requiresSignup: true,
           sessionCount: rateLimitResult.sessionCount,
         })
@@ -212,8 +249,10 @@ export async function POST(request: NextRequest) {
 
     // Block obvious prompt injection attempts before they hit the API
     if (containsSuspiciousPatterns(message)) {
+      const safeResponse = "Hey driver! I'm here to help with trucking stuff - routes, ELD regulations, rest stops, or quick cab workouts. What can I help you with?"
       return NextResponse.json({
-        response: "Hey driver! I'm here to help with trucking stuff - routes, ELD regulations, rest stops, or quick cab workouts. What can I help you with?",
+        response: safeResponse,
+        ttsHash: generateTTSHash(safeResponse),
         sessionCount: rateLimitResult.sessionCount,
       })
     }
@@ -256,8 +295,12 @@ export async function POST(request: NextRequest) {
     // Check if this is their last free question
     const isLastFreeQuestion = rateLimitResult.sessionCount === SESSION_LIMIT
 
+    // Generate hash for TTS verification
+    const ttsHash = generateTTSHash(assistantMessage)
+
     return NextResponse.json({
       response: assistantMessage,
+      ttsHash,
       sessionCount: rateLimitResult.sessionCount,
       isLastFreeQuestion,
     })

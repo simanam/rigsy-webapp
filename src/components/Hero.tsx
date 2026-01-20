@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import WaitlistModal from "./WaitlistModal";
 
 // Generate a unique session ID for rate limiting
 function generateSessionId(): string {
@@ -66,6 +67,10 @@ export default function Hero() {
   const [showSignupPrompt, setShowSignupPrompt] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [eyesShifted, setEyesShifted] = useState(false);
+  const [showWaitlistModal, setShowWaitlistModal] = useState(false);
+  const [speakingOffset, setSpeakingOffset] = useState({ x: 0, y: 0 });
+  const [pupilScale, setPupilScale] = useState(1);
+  const [speakingBlink, setSpeakingBlink] = useState(false);
 
   const phoneRef = useRef<HTMLDivElement>(null);
   const sessionIdRef = useRef<string>('');
@@ -137,19 +142,59 @@ export default function Hero() {
     };
   }, []);
 
+  // Animate eyes when speaking - natural rolling movement with size changes
+  useEffect(() => {
+    if (chatState !== 'speaking') {
+      setSpeakingOffset({ x: 0, y: 0 });
+      setPupilScale(1);
+      setSpeakingBlink(false);
+      return;
+    }
+
+    let time = 0;
+
+    // Smooth rolling movement using sine waves
+    const moveInterval = setInterval(() => {
+      time += 0.15;
+      // Create smooth circular/figure-8 movement
+      const x = Math.sin(time) * 4 + Math.sin(time * 1.7) * 2;
+      const y = Math.cos(time * 0.8) * 3 + Math.sin(time * 2.1) * 1.5;
+      setSpeakingOffset({ x, y });
+    }, 50);
+
+    // Pupil size pulsing - breathing effect
+    const scaleInterval = setInterval(() => {
+      setPupilScale(0.95 + Math.sin(Date.now() / 300) * 0.1);
+    }, 50);
+
+    // Random expressive blinks while speaking
+    const blinkInterval = setInterval(() => {
+      if (Math.random() > 0.7) {
+        setSpeakingBlink(true);
+        setTimeout(() => setSpeakingBlink(false), 120);
+      }
+    }, 1500);
+
+    return () => {
+      clearInterval(moveInterval);
+      clearInterval(scaleInterval);
+      clearInterval(blinkInterval);
+    };
+  }, [chatState]);
+
   // Calculate pupil position - shift left when in voice mode on desktop
   const basePupilOffsetX = eyesShifted ? -15 : mousePosition.x * 12;
   const basePupilOffsetY = eyesShifted ? 0 : mousePosition.y * 8;
-  const pupilOffsetX = basePupilOffsetX;
-  const pupilOffsetY = basePupilOffsetY;
+  const pupilOffsetX = basePupilOffsetX + speakingOffset.x;
+  const pupilOffsetY = basePupilOffsetY + speakingOffset.y;
 
   // Play TTS audio
-  const playTTS = useCallback(async (text: string) => {
+  const playTTS = useCallback(async (text: string, hash: string) => {
     try {
       const ttsResponse = await fetch('/api/tts', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ text }),
+        body: JSON.stringify({ text, hash }),
       });
 
       if (!ttsResponse.ok) {
@@ -214,7 +259,7 @@ export default function Hero() {
         setChatState('signup');
         // Still play the response
         setChatState('speaking');
-        await playTTS(data.response);
+        await playTTS(data.response, data.ttsHash);
         setChatState('signup');
         return;
       }
@@ -230,7 +275,7 @@ export default function Hero() {
       // Play the response via TTS
       setChatState('speaking');
       setEyesShifted(true); // Shift eyes on desktop when speaking
-      await playTTS(data.response);
+      await playTTS(data.response, data.ttsHash);
     } catch (error) {
       console.error('Chat error:', error);
       setErrorMessage('Failed to connect. Please try again.');
@@ -245,54 +290,74 @@ export default function Hero() {
       return;
     }
 
+    // Clear previous state
+    setTranscript('');
+    setResponse('');
+    setErrorMessage('');
+
     const SpeechRecognitionAPI = window.SpeechRecognition || window.webkitSpeechRecognition;
-    recognitionRef.current = new SpeechRecognitionAPI();
+    const recognition = new SpeechRecognitionAPI();
+    recognitionRef.current = recognition;
 
-    recognitionRef.current.continuous = false;
-    recognitionRef.current.interimResults = true;
-    recognitionRef.current.lang = 'en-US';
+    recognition.continuous = false;
+    recognition.interimResults = true;
+    recognition.lang = 'en-US';
 
-    recognitionRef.current.onstart = () => {
+    let hasProcessedFinal = false;
+
+    recognition.onstart = () => {
       setChatState('listening');
-      setTranscript('');
-      setErrorMessage('');
       setIsAwake(true);
     };
 
-    recognitionRef.current.onresult = (event: SpeechRecognitionEvent) => {
+    recognition.onresult = (event: SpeechRecognitionEvent) => {
       let finalTranscript = '';
       let interimTranscript = '';
 
       for (let i = event.resultIndex; i < event.results.length; i++) {
-        const transcript = event.results[i][0].transcript;
-        if (event.results[i].isFinal) {
-          finalTranscript += transcript;
+        const result = event.results[i];
+        if (result.isFinal) {
+          finalTranscript += result[0].transcript;
         } else {
-          interimTranscript += transcript;
+          interimTranscript += result[0].transcript;
         }
       }
 
-      setTranscript(finalTranscript || interimTranscript);
+      // Always update transcript to show what user is saying
+      const currentTranscript = finalTranscript || interimTranscript;
+      if (currentTranscript) {
+        setTranscript(currentTranscript);
+      }
 
-      if (finalTranscript) {
+      // Only send to API once when we get final result
+      if (finalTranscript && !hasProcessedFinal) {
+        hasProcessedFinal = true;
+        recognition.stop();
         sendToRigsy(finalTranscript);
       }
     };
 
-    recognitionRef.current.onerror = (event) => {
+    recognition.onerror = (event: Event & { error?: string }) => {
       console.error('Speech recognition error:', event);
+      if (event.error === 'no-speech') {
+        setErrorMessage('No speech detected. Try again.');
+      } else if (event.error === 'not-allowed') {
+        setErrorMessage('Microphone access denied. Please allow microphone.');
+      } else {
+        setErrorMessage('Could not hear you. Please try again.');
+      }
       setChatState('idle');
-      setErrorMessage('Could not hear you. Please try again.');
     };
 
-    recognitionRef.current.onend = () => {
-      if (chatState === 'listening' && !transcript) {
+    recognition.onend = () => {
+      // Only reset to idle if we haven't started processing
+      if (!hasProcessedFinal) {
         setChatState('idle');
       }
     };
 
-    recognitionRef.current.start();
-  }, [chatState, transcript, sendToRigsy]);
+    recognition.start();
+  }, [sendToRigsy]);
 
   // Stop voice recognition
   const stopListening = useCallback(() => {
@@ -307,8 +372,8 @@ export default function Hero() {
       stopListening();
     } else if (chatState === 'idle' || chatState === 'signup') {
       if (showSignupPrompt && chatState === 'signup') {
-        // Redirect to signup section if they've used all questions
-        document.getElementById('signup')?.scrollIntoView({ behavior: 'smooth' });
+        // Open waitlist modal instead of scrolling
+        setShowWaitlistModal(true);
         return;
       }
       startListening();
@@ -323,6 +388,12 @@ export default function Hero() {
     }
   };
 
+  // Handle waitlist button click in hero
+  const handleWaitlistClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setShowWaitlistModal(true);
+  };
+
   // Determine if we're in any active voice state
   const isVoiceActive = chatState !== 'idle';
 
@@ -335,6 +406,7 @@ export default function Hero() {
   const eyelidR = innerR + 1;
 
   return (
+    <>
     <section
       aria-label="Hero - Your AI Co-Pilot for the Long Haul"
       className="relative min-h-screen flex items-center justify-center overflow-hidden pt-16 sm:pt-20"
@@ -398,12 +470,12 @@ export default function Hero() {
               transition={{ duration: 0.8, delay: 0.5 }}
               className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 sm:gap-4"
             >
-              <a
-                href="#signup"
+              <button
+                onClick={handleWaitlistClick}
                 className="px-6 sm:px-8 py-3 sm:py-4 bg-[#FF6B35] hover:bg-[#FF8255] text-[#0D1117] font-semibold rounded-full transition-all transform hover:scale-105 glow-orange text-base sm:text-lg w-full sm:w-auto text-center focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FF6B35] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0D1117]"
               >
                 Join the Waitlist
-              </a>
+              </button>
               <a
                 href="#features"
                 className="px-6 sm:px-8 py-3 sm:py-4 border border-[#21262D] hover:border-[#4B5EAA] text-[#F0F3F6] font-semibold rounded-full transition-all text-base sm:text-lg w-full sm:w-auto text-center focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FF6B35] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0D1117]"
@@ -551,9 +623,9 @@ export default function Hero() {
                               animate={{
                                 x: pupilOffsetX * 0.5,
                                 y: pupilOffsetY * 0.4,
-                                scale: isAwake ? 1 : 0
+                                scale: isAwake ? pupilScale : 0
                               }}
-                              transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                              transition={{ type: "spring", stiffness: 200, damping: 25 }}
                             >
                               <circle cx={55} cy={50} r={15} fill="url(#mobilePupilGradient)" />
                               <circle cx={49} cy={44} r={5} fill="white" opacity="0.9" />
@@ -564,7 +636,7 @@ export default function Hero() {
                               cy={50}
                               rx={31}
                               fill="#1A1A2E"
-                              animate={{ ry: isBlinking || !isAwake ? 31 : 0 }}
+                              animate={{ ry: isBlinking || speakingBlink || !isAwake ? 31 : 0 }}
                               transition={{ duration: isAwake ? 0.1 : 0.5 }}
                             />
                             <path d="M 28 28 Q 55 10 82 28" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" opacity="0.15" />
@@ -578,9 +650,9 @@ export default function Hero() {
                               animate={{
                                 x: pupilOffsetX * 0.5,
                                 y: pupilOffsetY * 0.4,
-                                scale: isAwake ? 1 : 0
+                                scale: isAwake ? pupilScale : 0
                               }}
-                              transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                              transition={{ type: "spring", stiffness: 200, damping: 25 }}
                             >
                               <circle cx={145} cy={50} r={15} fill="url(#mobilePupilGradient)" />
                               <circle cx={139} cy={44} r={5} fill="white" opacity="0.9" />
@@ -591,7 +663,7 @@ export default function Hero() {
                               cy={50}
                               rx={31}
                               fill="#1A1A2E"
-                              animate={{ ry: isBlinking || !isAwake ? 31 : 0 }}
+                              animate={{ ry: isBlinking || speakingBlink || !isAwake ? 31 : 0 }}
                               transition={{ duration: isAwake ? 0.1 : 0.5 }}
                             />
                             <path d="M 118 28 Q 145 10 172 28" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" opacity="0.15" />
@@ -664,9 +736,9 @@ export default function Hero() {
                           animate={{
                             x: pupilOffsetX,
                             y: pupilOffsetY,
-                            scale: isAwake ? 1 : 0
+                            scale: isAwake ? pupilScale : 0
                           }}
-                          transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                          transition={{ type: "spring", stiffness: 200, damping: 25 }}
                         >
                           <circle cx={110} cy={90} r={pupilR} fill="url(#heroPupilGradient)" />
                           <circle cx={110 - highlightR * 1.3} cy={90 - highlightR * 1.3} r={highlightR} fill="white" opacity="0.9" />
@@ -679,7 +751,7 @@ export default function Hero() {
                           cy={90}
                           rx={eyelidR}
                           fill="#1A1A2E"
-                          animate={{ ry: isBlinking || !isAwake ? eyelidR : 0 }}
+                          animate={{ ry: isBlinking || speakingBlink || !isAwake ? eyelidR : 0 }}
                           transition={{ duration: isAwake ? 0.1 : 0.5 }}
                         />
 
@@ -704,9 +776,9 @@ export default function Hero() {
                           animate={{
                             x: pupilOffsetX,
                             y: pupilOffsetY,
-                            scale: isAwake ? 1 : 0
+                            scale: isAwake ? pupilScale : 0
                           }}
-                          transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                          transition={{ type: "spring", stiffness: 200, damping: 25 }}
                         >
                           <circle cx={290} cy={90} r={pupilR} fill="url(#heroPupilGradient)" />
                           <circle cx={290 - highlightR * 1.3} cy={90 - highlightR * 1.3} r={highlightR} fill="white" opacity="0.9" />
@@ -719,7 +791,7 @@ export default function Hero() {
                           cy={90}
                           rx={eyelidR}
                           fill="#1A1A2E"
-                          animate={{ ry: isBlinking || !isAwake ? eyelidR : 0 }}
+                          animate={{ ry: isBlinking || speakingBlink || !isAwake ? eyelidR : 0 }}
                           transition={{ duration: isAwake ? 0.1 : 0.5 }}
                         />
 
@@ -754,8 +826,9 @@ export default function Hero() {
                   <div className="absolute bottom-2 sm:bottom-4 left-1/2 -translate-x-1/2 z-30 flex flex-col items-center gap-2">
                     {/* Transcript/Response Display */}
                     <AnimatePresence mode="wait">
-                      {(transcript || response || errorMessage) && chatState !== 'idle' && (
+                      {chatState !== 'idle' && (
                         <motion.div
+                          key={chatState}
                           initial={{ opacity: 0, y: 10 }}
                           animate={{ opacity: 1, y: 0 }}
                           exit={{ opacity: 0, y: -10 }}
@@ -763,12 +836,17 @@ export default function Hero() {
                         >
                           {errorMessage ? (
                             <p className="text-xs text-red-400">{errorMessage}</p>
-                          ) : chatState === 'listening' && transcript ? (
-                            <p className="text-xs text-[#8B949E] italic">&quot;{transcript}&quot;</p>
+                          ) : chatState === 'listening' ? (
+                            <p className="text-xs text-[#8B949E]">
+                              {transcript ? <span className="italic">&quot;{transcript}&quot;</span> : 'Listening...'}
+                            </p>
+                          ) : chatState === 'processing' ? (
+                            <div className="flex flex-col gap-1">
+                              {transcript && <p className="text-xs text-[#6E7681] italic">&quot;{transcript}&quot;</p>}
+                              <p className="text-xs text-[#FF6B35]">Thinking...</p>
+                            </div>
                           ) : (chatState === 'speaking' || chatState === 'signup') && response ? (
                             <p className="text-xs text-[#F0F3F6]">{response}</p>
-                          ) : chatState === 'processing' ? (
-                            <p className="text-xs text-[#8B949E]">Thinking...</p>
                           ) : null}
                         </motion.div>
                       )}
@@ -884,13 +962,13 @@ export default function Hero() {
                     </motion.button>
 
                     {/* Session counter */}
-                    {sessionCount > 0 && sessionCount < 3 && chatState === 'idle' && (
+                    {sessionCount > 0 && sessionCount < 2 && chatState === 'idle' && (
                       <motion.p
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         className="text-[10px] text-[#6E7681]"
                       >
-                        {3 - sessionCount} question{3 - sessionCount !== 1 ? 's' : ''} left in demo
+                        {2 - sessionCount} question{2 - sessionCount !== 1 ? 's' : ''} left in demo
                       </motion.p>
                     )}
                   </div>
@@ -957,5 +1035,12 @@ export default function Hero() {
         </motion.div>
       </div>
     </section>
+
+      {/* Waitlist Modal */}
+      <WaitlistModal
+        isOpen={showWaitlistModal}
+        onClose={() => setShowWaitlistModal(false)}
+      />
+    </>
   );
 }

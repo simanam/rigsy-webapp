@@ -3,8 +3,16 @@ import { NextRequest, NextResponse } from 'next/server'
 
 // Rate limiting for TTS (more expensive than chat)
 const ttsRateLimitMap = new Map<string, { count: number; resetTime: number }>()
+const ttsDailyLimitMap = new Map<string, { count: number; resetTime: number }>()
+
 const TTS_RATE_LIMIT = 5 // requests per minute
 const TTS_RATE_WINDOW = 60 * 1000 // 1 minute
+const TTS_DAILY_LIMIT = 30 // max TTS requests per day per IP (very strict)
+const TTS_DAILY_WINDOW = 24 * 60 * 60 * 1000 // 24 hours
+
+// Simple HMAC-like verification to ensure TTS is only called with legitimate responses
+// This isn't cryptographically secure but adds friction for casual abuse
+const TTS_SECRET = process.env.TTS_INTERNAL_SECRET || 'rigsy-tts-2024'
 
 function getRateLimitKey(request: NextRequest): string {
   const forwarded = request.headers.get('x-forwarded-for')
@@ -12,31 +20,85 @@ function getRateLimitKey(request: NextRequest): string {
   return ip
 }
 
-function isTTSRateLimited(key: string): boolean {
+function isTTSRateLimited(key: string): { limited: boolean; reason?: string } {
   const now = Date.now()
-  const record = ttsRateLimitMap.get(key)
 
+  // Check daily limit first
+  const dailyRecord = ttsDailyLimitMap.get(key)
+  if (!dailyRecord || now > dailyRecord.resetTime) {
+    ttsDailyLimitMap.set(key, { count: 1, resetTime: now + TTS_DAILY_WINDOW })
+  } else if (dailyRecord.count >= TTS_DAILY_LIMIT) {
+    return { limited: true, reason: 'daily' }
+  } else {
+    dailyRecord.count++
+  }
+
+  // Check per-minute limit
+  const record = ttsRateLimitMap.get(key)
   if (!record || now > record.resetTime) {
     ttsRateLimitMap.set(key, { count: 1, resetTime: now + TTS_RATE_WINDOW })
-    return false
+    return { limited: false }
   }
 
   if (record.count >= TTS_RATE_LIMIT) {
-    return true
+    return { limited: true, reason: 'minute' }
   }
 
   record.count++
-  return false
+  return { limited: false }
+}
+
+// Simple hash to verify the text came from our chat endpoint
+function generateTextHash(text: string): string {
+  let hash = 0
+  const str = text + TTS_SECRET
+  for (let i = 0; i < str.length; i++) {
+    const char = str.charCodeAt(i)
+    hash = ((hash << 5) - hash) + char
+    hash = hash & hash
+  }
+  return hash.toString(36)
 }
 
 export async function POST(request: NextRequest) {
   try {
-    const { text } = await request.json()
+    // Basic origin check - only allow requests from our domain
+    const origin = request.headers.get('origin')
+    const referer = request.headers.get('referer')
+    const allowedOrigins = [
+      'http://localhost:3000',
+      'https://rigsy.co',
+      'https://www.rigsy.co',
+      process.env.NEXT_PUBLIC_SITE_URL,
+    ].filter(Boolean)
+
+    const isValidOrigin = allowedOrigins.some(allowed =>
+      origin?.startsWith(allowed as string) || referer?.startsWith(allowed as string)
+    )
+
+    if (!isValidOrigin && process.env.NODE_ENV === 'production') {
+      return NextResponse.json(
+        { error: 'Unauthorized' },
+        { status: 403 }
+      )
+    }
+
+    const { text, hash } = await request.json()
 
     if (!text || typeof text !== 'string') {
       return NextResponse.json(
         { error: 'Please provide text to convert.' },
         { status: 400 }
+      )
+    }
+
+    // Verify the hash matches - prevents direct API abuse
+    const expectedHash = generateTextHash(text)
+    if (hash !== expectedHash) {
+      console.warn('TTS: Invalid hash received, possible abuse attempt')
+      return NextResponse.json(
+        { error: 'Invalid request.' },
+        { status: 403 }
       )
     }
 
@@ -48,11 +110,15 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Rate limiting check
+    // Rate limiting check (per-minute and daily)
     const rateLimitKey = getRateLimitKey(request)
-    if (isTTSRateLimited(rateLimitKey)) {
+    const rateLimitResult = isTTSRateLimited(rateLimitKey)
+    if (rateLimitResult.limited) {
+      const errorMsg = rateLimitResult.reason === 'daily'
+        ? 'Daily voice limit reached. Please come back tomorrow.'
+        : 'Too many voice requests. Please wait a moment.'
       return NextResponse.json(
-        { error: 'Too many voice requests. Please wait a moment.' },
+        { error: errorMsg },
         { status: 429 }
       )
     }
@@ -68,10 +134,10 @@ export async function POST(request: NextRequest) {
 
     const openai = new OpenAI({ apiKey })
 
-    // Use OpenAI TTS with a friendly voice
+    // Use OpenAI TTS with a friendly female voice
     const mp3Response = await openai.audio.speech.create({
       model: 'tts-1', // Use tts-1 for faster response (tts-1-hd for higher quality)
-      voice: 'onyx', // Deep, warm voice good for a co-pilot character
+      voice: 'nova', // Friendly, warm female voice
       input: text,
       speed: 1.0,
     })
