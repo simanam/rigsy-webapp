@@ -1,0 +1,91 @@
+# Rigsy - AI Road Companion for Truck Drivers
+# https://rigsy.ai
+
+# Allow all crawlers
+User-agent: *
+Allow: /
+
+# Google
+User-agent: Googlebot
+Allow: /
+
+User-agent: Googlebot-Image
+Allow: /
+
+User-agent: Googlebot-News
+Allow: /
+
+# Bing
+User-agent: Bingbot
+Allow: /
+
+# Yahoo
+User-agent: Slurp
+Allow: /
+
+# DuckDuckGo
+User-agent: DuckDuckBot
+Allow: /
+
+# Yandex
+User-agent: Yandex
+Allow: /
+
+# Baidu
+User-agent: Baiduspider
+Allow: /
+
+# OpenAI GPTBot (ChatGPT, plugins, etc.)
+User-agent: GPTBot
+Allow: /
+
+# OpenAI ChatGPT-User (browsing feature)
+User-agent: ChatGPT-User
+Allow: /
+
+# Perplexity AI
+User-agent: PerplexityBot
+Allow: /
+
+# Anthropic Claude
+User-agent: ClaudeBot
+Allow: /
+User-agent: Claude-Web
+Allow: /
+
+# Google AI / Bard
+User-agent: Google-Extended
+Allow: /
+
+# Cohere AI
+User-agent: cohere-ai
+Allow: /
+
+# Common Crawl (used by many AI models for training)
+User-agent: CCBot
+Allow: /
+
+# Meta AI
+User-agent: FacebookBot
+Allow: /
+User-agent: Meta-ExternalAgent
+Allow: /
+
+# Apple
+User-agent: Applebot
+Allow: /
+
+# Archive.org
+User-agent: ia_archiver
+Allow: /
+
+# Semrush
+User-agent: SemrushBot
+Allow: /
+
+# Ahrefs
+User-agent: AhrefsBot
+Allow: /
+
+# Sitemap location
+Sitemap: https://rigsy.ai/sitemap.xml

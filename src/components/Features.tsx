@@ -37,7 +37,7 @@ function MiniRigsyEyes({ isActive = false }: { isActive?: boolean }) {
   const pupilOffsetY = mousePosition.y * 4;
 
   return (
-    <svg viewBox="0 0 200 100" className="w-full h-full">
+    <svg viewBox="0 0 200 100" className="w-full h-full" aria-hidden="true" role="img">
       <defs>
         <linearGradient id="miniBodyGradient" x1="0%" y1="0%" x2="0%" y2="100%">
           <stop offset="0%" stopColor="#2D2D44" />
@@ -159,7 +159,7 @@ function FitnessWorkoutCard() {
         >
           {/* Time indicator */}
           <div className="flex items-center justify-center gap-2 text-[#8B949E] text-xs">
-            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
             <span>5 hours of driving</span>
@@ -168,7 +168,8 @@ function FitnessWorkoutCard() {
           {/* Notification Card */}
           <motion.button
             onClick={() => setShowWorkout(true)}
-            className="w-full bg-[#0D1117] rounded-2xl p-4 border border-[#21262D] hover:border-[#FF6B35]/50 transition-all text-left"
+            aria-label="View workout routine - 5-minute stretch routine"
+            className="w-full bg-[#0D1117] rounded-2xl p-4 border border-[#21262D] hover:border-[#FF6B35]/50 transition-all text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FF6B35] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0D1117]"
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
           >
@@ -193,7 +194,7 @@ function FitnessWorkoutCard() {
             </div>
 
             {/* Tap hint */}
-            <div className="flex items-center justify-center gap-1 mt-3 pt-3 border-t border-[#21262D]">
+            <div className="flex items-center justify-center gap-1 mt-3 pt-3 border-t border-[#21262D]" aria-hidden="true">
               <span className="text-[#6E7681] text-[10px]">Tap to view workout</span>
               <svg className="w-3 h-3 text-[#6E7681]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -217,9 +218,10 @@ function FitnessWorkoutCard() {
               </div>
               <button
                 onClick={() => setShowWorkout(false)}
-                className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors"
+                aria-label="Close workout card"
+                className="w-10 h-10 -m-1 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-white"
               >
-                <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </button>
@@ -276,14 +278,15 @@ function FitnessWorkoutCard() {
                   {/* Truckers Routine logo */}
                   <img
                     src="/AppLogo.png"
-                    alt="Truckers Routine"
+                    alt="Truckers Routine app logo"
                     className="w-4 h-4 rounded"
                   />
                   <span className="text-[#31407F] text-[10px] font-semibold">Truckers Routine</span>
                 </div>
               </div>
               <motion.button
-                className="px-3 py-1.5 bg-[#FF670E] text-white text-xs font-semibold rounded-full"
+                aria-label="Start workout routine"
+                className="px-3 py-1.5 bg-[#FF670E] text-white text-xs font-semibold rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FF670E] focus-visible:ring-offset-2 focus-visible:ring-offset-[#F5F5F0]"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
@@ -524,8 +527,10 @@ function ConciergeResultsCard() {
                 ))}
               </div>
               <div className="flex items-center gap-1">
-                <div className={`w-2 h-2 rounded-full ${stop.parking > 15 ? "bg-[#3FB950]" : "bg-[#D29922]"}`} />
-                <span className="text-[#8B949E] text-[8px] sm:text-[9px]">{stop.parking} spots</span>
+                <div className={`w-2 h-2 rounded-full ${stop.parking > 15 ? "bg-[#3FB950]" : "bg-[#D29922]"}`} aria-hidden="true" />
+                <span className="text-[#8B949E] text-[8px] sm:text-[9px]">
+                  {stop.parking} spots {stop.parking > 15 ? "(plenty available)" : "(limited)"}
+                </span>
               </div>
             </div>
           </motion.div>
@@ -544,11 +549,12 @@ function ConciergeResultsCard() {
             </p>
           </div>
           <motion.button
-            className="shrink-0 ml-2 px-2.5 sm:px-3 py-1.5 bg-[#58A6FF] text-white text-[9px] sm:text-xs font-semibold rounded-full flex items-center gap-1"
+            aria-label="Open Love's Travel Stop at Exit 42 in Maps"
+            className="shrink-0 ml-2 px-2.5 sm:px-3 py-1.5 bg-[#58A6FF] text-white text-[9px] sm:text-xs font-semibold rounded-full flex items-center gap-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#58A6FF] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0D1117]"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
-            <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
             </svg>
             Open in Maps
@@ -664,11 +670,12 @@ function DiagnosticCard() {
             </p>
           </div>
           <motion.button
-            className="shrink-0 ml-2 px-3 py-1.5 bg-[#D29922] text-[#0D1117] text-[10px] sm:text-xs font-semibold rounded-full flex items-center gap-1"
+            aria-label="Call TA Truck Service at Exit 78"
+            className="shrink-0 ml-2 px-3 py-1.5 bg-[#D29922] text-[#0D1117] text-[10px] sm:text-xs font-semibold rounded-full flex items-center gap-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#D29922] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0D1117]"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
-            <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
             </svg>
             Call
@@ -760,12 +767,13 @@ function CompanionCard() {
             <span className="text-[#1DB954] text-[9px] sm:text-[10px] font-medium">New episode for you</span>
           </div>
           <motion.button
-            className="w-full flex items-center gap-3 p-3 hover:bg-[#1DB954]/5 transition-colors text-left"
+            aria-label="Play The Joe Rogan Experience episode 2104"
+            className="w-full flex items-center gap-3 p-3 hover:bg-[#1DB954]/5 transition-colors text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-[#1DB954] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0D1117]"
             whileHover={{ scale: 1.01 }}
             whileTap={{ scale: 0.99 }}
           >
             {/* Podcast artwork */}
-            <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-[#1a1a2e] to-[#4B5EAA] flex items-center justify-center shrink-0 overflow-hidden">
+            <div className="w-12 h-12 rounded-lg bg-linear-to-br from-[#1a1a2e] to-[#4B5EAA] flex items-center justify-center shrink-0 overflow-hidden" aria-hidden="true">
               <svg className="w-6 h-6 text-white/80" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
               </svg>
@@ -777,6 +785,7 @@ function CompanionCard() {
             <motion.div
               className="w-8 h-8 rounded-full bg-[#1DB954] flex items-center justify-center shrink-0"
               whileHover={{ scale: 1.1 }}
+              aria-hidden="true"
             >
               <svg className="w-4 h-4 text-white ml-0.5" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M8 5v14l11-7z"/>
@@ -793,12 +802,13 @@ function CompanionCard() {
           transition={{ delay: 0.3 }}
         >
           <motion.button
-            className="w-full flex items-center gap-3 p-3 hover:bg-[#21262D]/80 transition-colors text-left"
+            aria-label="Play Your Road Trip Mix - Country, rock and driving classics"
+            className="w-full flex items-center gap-3 p-3 hover:bg-[#21262D]/80 transition-colors text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FF6B35] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0D1117]"
             whileHover={{ scale: 1.01 }}
             whileTap={{ scale: 0.99 }}
           >
             {/* Album artwork placeholder */}
-            <div className="w-12 h-12 rounded-lg bg-gradient-to-br from-[#FF6B35] to-[#D29922] flex items-center justify-center shrink-0">
+            <div className="w-12 h-12 rounded-lg bg-linear-to-br from-[#FF6B35] to-[#D29922] flex items-center justify-center shrink-0" aria-hidden="true">
               <svg className="w-6 h-6 text-white/90" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
               </svg>
@@ -807,7 +817,7 @@ function CompanionCard() {
               <p className="text-[#F0F3F6] text-xs sm:text-sm font-medium">Your Road Trip Mix</p>
               <p className="text-[#8B949E] text-[9px] sm:text-[10px]">Country, rock & driving classics</p>
             </div>
-            <svg className="w-4 h-4 text-[#6E7681] shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg className="w-4 h-4 text-[#6E7681] shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>
           </motion.button>
@@ -855,8 +865,18 @@ function DriverStatsCard() {
 
       <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
         {/* Pie Chart */}
-        <div className="relative shrink-0">
-          <svg width="100" height="100" viewBox="0 0 140 140" className="sm:w-[140px] sm:h-[140px]">
+        <figure className="relative shrink-0" aria-labelledby="driver-stats-desc">
+          <svg
+            width="100"
+            height="100"
+            viewBox="0 0 140 140"
+            className="sm:w-[140px] sm:h-[140px]"
+            role="img"
+            aria-labelledby="driver-stats-desc"
+          >
+            <title id="driver-stats-desc">
+              Driver status pie chart: 4 hours 15 minutes driving time remaining of 11 hour limit. 6 hours 45 minutes already driven.
+            </title>
             <circle
               cx="70"
               cy="70"
@@ -898,14 +918,14 @@ function DriverStatsCard() {
               transition={{ duration: 1, delay: 0.5 }}
             />
             {/* Center text */}
-            <text x="70" y="65" textAnchor="middle" className="fill-[#F0F3F6] text-2xl font-bold">
+            <text x="70" y="65" textAnchor="middle" className="fill-[#F0F3F6] text-2xl font-bold" aria-hidden="true">
               4:15
             </text>
-            <text x="70" y="82" textAnchor="middle" className="fill-[#8B949E] text-xs">
+            <text x="70" y="82" textAnchor="middle" className="fill-[#8B949E] text-xs" aria-hidden="true">
               remaining
             </text>
           </svg>
-        </div>
+        </figure>
 
         {/* Stats */}
         <div className="w-full sm:flex-1 space-y-2 sm:space-y-3">
@@ -1089,14 +1109,14 @@ export default function Features() {
   ];
 
   return (
-    <section id="features" className="py-16 sm:py-24 bg-[#161B22]">
+    <section id="features" aria-labelledby="features-heading" className="py-16 sm:py-24 bg-[#161B22]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         {/* Section header */}
         <div className="text-center mb-10 sm:mb-16">
           <span className="inline-block px-3 sm:px-4 py-1 sm:py-1.5 rounded-full bg-[#4B5EAA]/20 text-[#58A6FF] text-xs sm:text-sm font-medium mb-3 sm:mb-4">
             Features
           </span>
-          <h2 className="text-2xl sm:text-4xl md:text-5xl font-bold text-[#F0F3F6] mb-3 sm:mb-4">
+          <h2 id="features-heading" className="text-2xl sm:text-4xl md:text-5xl font-bold text-[#F0F3F6] mb-3 sm:mb-4">
             Everything a Trucker Needs
           </h2>
           <p className="text-base sm:text-xl text-[#8B949E] max-w-2xl mx-auto">
@@ -1132,7 +1152,7 @@ export default function Features() {
                 </p>
 
                 {/* Capabilities list */}
-                <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3 mb-4 sm:mb-6">
+                <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3 mb-4 sm:mb-6" aria-label={`${feature.title} capabilities`}>
                   {feature.capabilities.map((cap, i) => (
                     <li key={i} className="flex items-center gap-2">
                       <svg
@@ -1140,6 +1160,7 @@ export default function Features() {
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
+                        aria-hidden="true"
                       >
                         <path
                           strokeLinecap="round"

@@ -26,6 +26,8 @@ export function RigsyLogoIcon({
       viewBox="0 0 100 50"
       className={className}
       style={{ filter: showGlow ? "drop-shadow(0 0 8px rgba(255, 107, 53, 0.5))" : undefined }}
+      aria-hidden="true"
+      role="img"
     >
       <defs>
         <linearGradient id={`${id}-bodyGradient`} x1="0%" y1="0%" x2="0%" y2="100%">
@@ -158,8 +160,9 @@ export function RigsyMiniLogo({
 }) {
   return (
     <div
-      className={`rounded-lg bg-gradient-to-br from-[#2D2D44] to-[#1A1A2E] flex items-center justify-center ${className}`}
+      className={`rounded-lg bg-linear-to-br from-[#2D2D44] to-[#1A1A2E] flex items-center justify-center ${className}`}
       style={{ width: size, height: size }}
+      aria-hidden="true"
     >
       <RigsyLogoIcon size={size * 0.8} />
     </div>
@@ -176,8 +179,9 @@ export function RigsyLogoBadge({
 }) {
   return (
     <div
-      className={`rounded-full bg-gradient-to-br from-[#4B5EAA] to-[#FF6B35] p-[2px] ${className}`}
+      className={`rounded-full bg-linear-to-br from-[#4B5EAA] to-[#FF6B35] p-[2px] ${className}`}
       style={{ width: size, height: size }}
+      aria-hidden="true"
     >
       <div
         className="w-full h-full rounded-full bg-[#0D1117] flex items-center justify-center"

@@ -7,6 +7,7 @@ export default function Problem() {
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
+          aria-hidden="true"
         >
           <path
             strokeLinecap="round"
@@ -29,6 +30,7 @@ export default function Problem() {
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
+          aria-hidden="true"
         >
           <path
             strokeLinecap="round"
@@ -51,6 +53,7 @@ export default function Problem() {
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
+          aria-hidden="true"
         >
           <path
             strokeLinecap="round"
@@ -73,6 +76,7 @@ export default function Problem() {
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
+          aria-hidden="true"
         >
           <path
             strokeLinecap="round"
@@ -91,11 +95,11 @@ export default function Problem() {
   ];
 
   return (
-    <section id="problem" className="py-24 bg-[#0D1117]">
+    <section id="problem" aria-labelledby="problem-heading" className="py-24 bg-[#0D1117]">
       <div className="max-w-7xl mx-auto px-6">
         {/* Section header */}
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-[#F0F3F6] mb-4">
+          <h2 id="problem-heading" className="text-4xl md:text-5xl font-bold text-[#F0F3F6] mb-4">
             Trucking&apos;s Hidden Crisis
           </h2>
           <p className="text-xl text-[#8B949E] max-w-2xl mx-auto">

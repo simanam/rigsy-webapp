@@ -74,7 +74,10 @@ export default function Hero() {
   const eyelidR = innerR + 1;
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-16 sm:pt-20">
+    <section
+      aria-label="Hero - Your AI Co-Pilot for the Long Haul"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden pt-16 sm:pt-20"
+    >
       {/* Background gradient effects */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute top-1/4 left-1/4 w-64 sm:w-96 h-64 sm:h-96 bg-[#4B5EAA]/20 rounded-full blur-[128px]" />
@@ -136,44 +139,45 @@ export default function Hero() {
             >
               <a
                 href="#signup"
-                className="px-6 sm:px-8 py-3 sm:py-4 bg-[#FF6B35] hover:bg-[#FF8255] text-[#0D1117] font-semibold rounded-full transition-all transform hover:scale-105 glow-orange text-base sm:text-lg w-full sm:w-auto text-center"
+                className="px-6 sm:px-8 py-3 sm:py-4 bg-[#FF6B35] hover:bg-[#FF8255] text-[#0D1117] font-semibold rounded-full transition-all transform hover:scale-105 glow-orange text-base sm:text-lg w-full sm:w-auto text-center focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FF6B35] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0D1117]"
               >
                 Join the Waitlist
               </a>
               <a
                 href="#features"
-                className="px-6 sm:px-8 py-3 sm:py-4 border border-[#21262D] hover:border-[#4B5EAA] text-[#F0F3F6] font-semibold rounded-full transition-all text-base sm:text-lg w-full sm:w-auto text-center"
+                className="px-6 sm:px-8 py-3 sm:py-4 border border-[#21262D] hover:border-[#4B5EAA] text-[#F0F3F6] font-semibold rounded-full transition-all text-base sm:text-lg w-full sm:w-auto text-center focus:outline-none focus-visible:ring-2 focus-visible:ring-[#FF6B35] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0D1117]"
               >
                 See Features
               </a>
             </motion.div>
 
             {/* Trust indicators - hidden on very small screens */}
-            <motion.div
+            <motion.ul
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.8, delay: 0.6 }}
               className="hidden sm:flex flex-wrap items-center justify-center lg:justify-start gap-4 sm:gap-6 pt-2 sm:pt-4"
+              aria-label="Key features"
             >
-              <div className="flex items-center gap-2">
-                <svg className="w-4 sm:w-5 h-4 sm:h-5 text-[#3FB950]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <li className="flex items-center gap-2">
+                <svg className="w-4 sm:w-5 h-4 sm:h-5 text-[#3FB950]" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                 </svg>
                 <span className="text-xs sm:text-sm text-[#8B949E]">Voice-First</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <svg className="w-4 sm:w-5 h-4 sm:h-5 text-[#3FB950]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              </li>
+              <li className="flex items-center gap-2">
+                <svg className="w-4 sm:w-5 h-4 sm:h-5 text-[#3FB950]" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                 </svg>
                 <span className="text-xs sm:text-sm text-[#8B949E]">ELD Integration</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <svg className="w-4 sm:w-5 h-4 sm:h-5 text-[#3FB950]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              </li>
+              <li className="flex items-center gap-2">
+                <svg className="w-4 sm:w-5 h-4 sm:h-5 text-[#3FB950]" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                 </svg>
                 <span className="text-xs sm:text-sm text-[#8B949E]">Works Offline</span>
-              </div>
-            </motion.div>
+              </li>
+            </motion.ul>
           </motion.div>
 
           {/* Right Column - Phone on Truck Dashboard */}
@@ -191,6 +195,20 @@ export default function Hero() {
               transition={{ duration: 0.8, delay: 0.5 }}
               className="relative w-full max-w-xs sm:max-w-xl"
             >
+              {/* Animated glow effect - behind dashboard */}
+              <motion.div
+                animate={{
+                  scale: [1, 1.08, 1],
+                  opacity: isListening ? [0.5, 0.8, 0.5] : [0.2, 0.35, 0.2],
+                }}
+                transition={{
+                  duration: isListening ? 1 : 4,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
+                className="absolute -inset-4 sm:-inset-6 bg-linear-to-r from-[#4B5EAA] via-[#FF6B35] to-[#4B5EAA] rounded-2xl sm:rounded-4xl blur-2xl sm:blur-3xl"
+              />
+
               {/* Dashboard Background with Road View */}
               <div className="relative rounded-xl sm:rounded-3xl overflow-hidden">
                 {/* Landscape image as background - zoomed in on road view */}
@@ -214,19 +232,6 @@ export default function Hero() {
 
                   {/* Phone frame */}
                   <div className="relative bg-gradient-to-br from-[#1a1a1a] to-[#2d2d2d] rounded-2xl sm:rounded-[2.5rem] p-[2px] sm:p-[4px] shadow-2xl mx-auto max-w-[280px] sm:max-w-none">
-                    {/* Animated glow effect */}
-                    <motion.div
-                      animate={{
-                        scale: [1, 1.05, 1],
-                        opacity: isListening ? [0.4, 0.6, 0.4] : [0.15, 0.25, 0.15],
-                      }}
-                      transition={{
-                        duration: isListening ? 1 : 4,
-                        repeat: Infinity,
-                        ease: "easeInOut",
-                      }}
-                      className="absolute inset-0 bg-gradient-to-r from-[#4B5EAA] via-[#FF6B35] to-[#4B5EAA] rounded-2xl sm:rounded-[2.5rem] blur-2xl -z-10"
-                    />
 
                     {/* Phone Screen - Horizontal on all sizes */}
                     <div className="relative bg-[#0D1117] rounded-[1.1rem] sm:rounded-[2.2rem] overflow-hidden aspect-video sm:aspect-[19.5/9]">
@@ -236,7 +241,7 @@ export default function Hero() {
                       {/* Rigsy Eyes Interface */}
                       <div className="absolute inset-0 flex items-center justify-center p-2 sm:p-6 sm:py-8">
                         {/* Horizontal layout SVG for mobile */}
-                        <svg viewBox="0 0 400 180" className="w-full h-full sm:hidden" preserveAspectRatio="xMidYMid meet">
+                        <svg viewBox="0 0 400 180" className="w-full h-full sm:hidden" preserveAspectRatio="xMidYMid meet" aria-hidden="true" role="img">
                       {/* SVG Definitions for mobile */}
                       <defs>
                         <linearGradient id="mobileBodyGradient" x1="0%" y1="0%" x2="0%" y2="100%">
@@ -347,7 +352,7 @@ export default function Hero() {
                     </svg>
 
                     {/* Horizontal layout SVG for desktop */}
-                    <svg viewBox="0 0 400 180" className="hidden sm:block w-full h-full" preserveAspectRatio="xMidYMid meet">
+                    <svg viewBox="0 0 400 180" className="hidden sm:block w-full h-full" preserveAspectRatio="xMidYMid meet" aria-hidden="true" role="img">
                       {/* SVG Definitions */}
                       <defs>
                         <linearGradient id="heroBodyGradient" x1="0%" y1="0%" x2="0%" y2="100%">
@@ -488,7 +493,9 @@ export default function Hero() {
                   <div className="absolute bottom-2 sm:bottom-4 left-1/2 -translate-x-1/2 z-30">
                     <motion.button
                       onClick={handleMicClick}
-                      className={`flex items-center gap-2 sm:gap-3 px-4 sm:px-6 py-2 sm:py-3 rounded-full transition-all shadow-xl ${
+                      aria-label={isListening ? "Stop listening to voice input" : "Activate Rigsy voice assistant"}
+                      aria-pressed={isListening}
+                      className={`flex items-center gap-2 sm:gap-3 px-4 sm:px-6 py-2 sm:py-3 rounded-full transition-all shadow-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#0D1117] ${
                         isListening
                           ? "bg-[#FF6B35] text-white"
                           : "bg-[#161B22]/90 backdrop-blur-sm border border-[#21262D] text-[#F0F3F6] hover:border-[#FF6B35]"
@@ -499,12 +506,14 @@ export default function Hero() {
                       <motion.div
                         animate={isListening ? { scale: [1, 1.2, 1] } : {}}
                         transition={{ duration: 0.5, repeat: isListening ? Infinity : 0 }}
+                        aria-hidden="true"
                       >
                         <svg
                           className={`w-4 h-4 sm:w-5 sm:h-5 ${isListening ? "text-white" : "text-[#FF6B35]"}`}
                           fill="none"
                           viewBox="0 0 24 24"
                           stroke="currentColor"
+                          aria-hidden="true"
                         >
                           <path
                             strokeLinecap="round"
@@ -518,7 +527,7 @@ export default function Hero() {
                         {isListening ? "Listening..." : "Hey Rigsy"}
                       </span>
                       {isListening && (
-                        <div className="flex items-center gap-0.5 ml-1">
+                        <div className="flex items-center gap-0.5 ml-1" aria-hidden="true">
                           {[...Array(3)].map((_, i) => (
                             <motion.div
                               key={i}
@@ -533,6 +542,10 @@ export default function Hero() {
                           ))}
                         </div>
                       )}
+                      {/* Screen reader announcement for state changes */}
+                      <span className="sr-only" aria-live="polite">
+                        {isListening ? "Voice assistant is now listening" : ""}
+                      </span>
                     </motion.button>
                   </div>
 
@@ -588,7 +601,7 @@ export default function Hero() {
       </div>
 
       {/* Scroll indicator - hidden on small screens */}
-      <div className="absolute bottom-4 sm:bottom-8 left-1/2 transform -translate-x-1/2 hidden sm:block">
+      <div className="absolute bottom-4 sm:bottom-8 left-1/2 transform -translate-x-1/2 hidden sm:block" aria-hidden="true">
         <motion.div
           animate={{ y: [0, 8, 0] }}
           transition={{ duration: 1.5, repeat: Infinity }}

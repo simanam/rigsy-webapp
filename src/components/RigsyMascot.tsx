@@ -57,12 +57,13 @@ export default function RigsyMascot({ size = 300, className = "" }: RigsyMascotP
   const headRotation = mousePosition.x * 3;
 
   return (
-    <div ref={containerRef} className={`relative ${className}`} style={{ width: size, height: size * 0.5 }}>
+    <div ref={containerRef} className={`relative ${className}`} style={{ width: size, height: size * 0.5 }} aria-hidden="true">
       <motion.svg
         viewBox="0 0 400 200"
         className="w-full h-full"
         animate={{ rotate: headRotation }}
         transition={{ type: "spring", stiffness: 100, damping: 20 }}
+        role="img"
       >
         {/* Definitions for gradients and shadows */}
         <defs>

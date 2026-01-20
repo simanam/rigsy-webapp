@@ -11,6 +11,7 @@ export default function HowItWorks() {
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
+          aria-hidden="true"
         >
           <path
             strokeLinecap="round"
@@ -32,6 +33,7 @@ export default function HowItWorks() {
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
+          aria-hidden="true"
         >
           <path
             strokeLinecap="round"
@@ -53,6 +55,7 @@ export default function HowItWorks() {
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
+          aria-hidden="true"
         >
           <path
             strokeLinecap="round"
@@ -74,6 +77,7 @@ export default function HowItWorks() {
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
+          aria-hidden="true"
         >
           <path
             strokeLinecap="round"
@@ -87,14 +91,14 @@ export default function HowItWorks() {
   ];
 
   return (
-    <section id="how-it-works" className="py-24 bg-[#0D1117]">
+    <section id="how-it-works" aria-labelledby="how-it-works-heading" className="py-24 bg-[#0D1117]">
       <div className="max-w-7xl mx-auto px-6">
         {/* Section header */}
         <div className="text-center mb-16">
           <span className="inline-block px-4 py-1.5 rounded-full bg-[#FF6B35]/20 text-[#FF6B35] text-sm font-medium mb-4">
             How It Works
           </span>
-          <h2 className="text-4xl md:text-5xl font-bold text-[#F0F3F6] mb-4">
+          <h2 id="how-it-works-heading" className="text-4xl md:text-5xl font-bold text-[#F0F3F6] mb-4">
             Up and Running in Minutes
           </h2>
           <p className="text-xl text-[#8B949E] max-w-2xl mx-auto">
@@ -106,7 +110,7 @@ export default function HowItWorks() {
         {/* Steps */}
         <div className="relative">
           {/* Connection line */}
-          <div className="hidden lg:block absolute top-1/2 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-[#21262D] to-transparent transform -translate-y-1/2" />
+          <div className="hidden lg:block absolute top-1/2 left-0 right-0 h-0.5 bg-linear-to-r from-transparent via-[#21262D] to-transparent transform -translate-y-1/2" aria-hidden="true" />
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {steps.map((step, index) => (
@@ -114,7 +118,7 @@ export default function HowItWorks() {
                 {/* Step card */}
                 <div className="p-6 rounded-2xl bg-[#161B22] border border-[#21262D] hover:border-[#4B5EAA]/50 transition-all h-full">
                   {/* Number badge */}
-                  <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-gradient-to-br from-[#4B5EAA] to-[#FF6B35] text-white font-bold text-lg mb-4">
+                  <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-linear-to-br from-[#4B5EAA] to-[#FF6B35] text-white font-bold text-lg mb-4" aria-hidden="true">
                     {step.number}
                   </div>
 
@@ -134,12 +138,13 @@ export default function HowItWorks() {
 
                 {/* Arrow for desktop (except last) */}
                 {index < steps.length - 1 && (
-                  <div className="hidden lg:block absolute top-1/2 -right-4 transform -translate-y-1/2 z-10">
+                  <div className="hidden lg:block absolute top-1/2 -right-4 transform -translate-y-1/2 z-10" aria-hidden="true">
                     <svg
                       className="w-8 h-8 text-[#4B5EAA]"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
+                      aria-hidden="true"
                     >
                       <path
                         strokeLinecap="round"
