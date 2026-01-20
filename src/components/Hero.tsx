@@ -445,7 +445,7 @@ export default function Hero() {
   return (
     <>
     <section
-      aria-label="Hero - Your AI Co-Pilot for the Long Haul"
+      aria-label="Hero - Your Voice, Your Rig, Your Rules"
       className="relative min-h-screen flex items-center justify-center overflow-hidden pt-16 sm:pt-20"
     >
       {/* Background gradient effects */}
@@ -483,9 +483,9 @@ export default function Hero() {
               transition={{ duration: 0.8, delay: 0.3 }}
               className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-[#F0F3F6] leading-[1.1]"
             >
-              Your AI Co-Pilot
+              Your Voice. Your Rig.
               <br />
-              <span className="text-gradient">for the Long Haul</span>
+              <span className="text-gradient">Your Rules.</span>
             </motion.h1>
 
             {/* Subheading */}
@@ -495,9 +495,9 @@ export default function Hero() {
               transition={{ duration: 0.8, delay: 0.4 }}
               className="text-base sm:text-lg md:text-xl text-[#8B949E] max-w-xl mx-auto lg:mx-0"
             >
-              Rigsy is a voice-first AI companion built for professional truck
-              drivers. Handle ELD compliance, get health coaching, and never
-              drive alone again.
+              Ditch the tablet dance. Rigsy is a voice-first AI companion that
+              handles ELD compliance, health coaching, and keeps you company on
+              the long haul—entirely hands-free.
             </motion.p>
 
             {/* CTA buttons */}

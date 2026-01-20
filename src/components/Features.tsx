@@ -718,10 +718,10 @@ function CompanionCard() {
           </div>
           <div>
             <p className="text-[#F0F3F6] text-xs sm:text-sm leading-relaxed mb-2">
-              &ldquo;Hey, you&apos;ve been quiet for a while. Everything okay?&rdquo;
+              &ldquo;You&apos;ve gone quiet. Want to talk, or want me to shut up too?&rdquo;
             </p>
             <p className="text-[#8B949E] text-[10px] sm:text-xs">
-              Want to talk about something, or should I put on a podcast?
+              I can put on a podcast if you&apos;d rather just listen.
             </p>
           </div>
         </div>
@@ -980,7 +980,7 @@ export default function Features() {
       title: "The ELD Liaison",
       tagline: "Your compliance paperwork, handled by voice",
       description:
-        "Change ELD status, query your hours, and complete pre-trip inspections entirely hands-free. No more fumbling with tablets while tired or wearing gloves.",
+        "Change ELD status, query your hours, and complete pre-trip inspections entirely hands-free. No more stabbing at a screen with frozen fingers.",
       capabilities: [
         "Voice-controlled status switching",
         "Real-time HOS calculations",
@@ -990,7 +990,7 @@ export default function Features() {
       example: {
         driver: "Hey Rigsy, what's my clock look like?",
         rigsy:
-          "You've got 4 hours 15 minutes of driving time left. Your 14-hour window closes at 8 PM.",
+          "You've got 4 hours 15 minutes left. Your 14-hour window closes at 8 PM. Should I scout parking now?",
       },
       gradient: "from-[#3FB950] to-[#4B5EAA]",
       hasCustomVisual: true,
@@ -1010,9 +1010,9 @@ export default function Features() {
         "Cab-friendly meal prep ideas",
       ],
       example: {
-        driver: "I just had avocado toast with a fried egg",
+        driver: "Pulling into Love's. What won't wreck me?",
         rigsy:
-          "Got it! That's 306 calories with a solid protein start. Try adding some fruit for fiber at your next stop.",
+          "The grilled chicken wrap is solid—340 cal, 28g protein. Skip the double burger so you don't hit a wall two hours later.",
       },
       gradient: "from-[#FF6B35] to-[#D29922]",
       hasCustomVisual: true,
@@ -1088,7 +1088,7 @@ export default function Features() {
       id: "companion",
       category: "Companionship",
       title: "The Mental Co-Pilot",
-      tagline: "A co-pilot who actually knows you",
+      tagline: "Rigsy isn't a chatbot. It remembers who you are.",
       description:
         "Remembers your life, your goals, your struggles. Proactive check-ins when you've been quiet too long. A genuine companion for the long haul.",
       capabilities: [
@@ -1100,7 +1100,7 @@ export default function Features() {
       example: {
         driver: "(After 2 hours of silence)",
         rigsy:
-          "Hey, you've been quiet for a while. Everything okay? Want to talk, or should I put on a podcast?",
+          "You've gone quiet. Want to talk, or want me to shut up too?",
       },
       gradient: "from-[#4B5EAA] to-[#8B949E]",
       hasCustomVisual: true,
@@ -1117,7 +1117,7 @@ export default function Features() {
             Features
           </span>
           <h2 id="features-heading" className="text-2xl sm:text-4xl md:text-5xl font-bold text-[#F0F3F6] mb-3 sm:mb-4">
-            Everything a Trucker Needs
+            Everything a Driver Needs
           </h2>
           <p className="text-base sm:text-xl text-[#8B949E] max-w-2xl mx-auto">
             Six powerful AI modules working together as your personal road

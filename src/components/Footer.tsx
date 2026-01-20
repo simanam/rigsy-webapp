@@ -17,7 +17,7 @@ export default function Footer() {
               <RigsyLogo size={36} variant="full" />
             </a>
             <p className="text-sm text-[#8B949E] text-center md:text-left max-w-xs">
-              A co-pilot who knows the road, knows the regs, and knows you.
+              You run the rig. Rigsy runs the rest.
             </p>
           </div>
 
@@ -72,7 +72,7 @@ export default function Footer() {
               Accessibility
             </a>
             <p className="text-sm text-[#6E7681]">
-              Built for the Industrial Athletes who keep America moving.
+              Built for the drivers who keep America moving.
             </p>
           </div>
         </div>

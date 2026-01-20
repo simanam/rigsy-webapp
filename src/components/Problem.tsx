@@ -17,11 +17,11 @@ export default function Problem() {
           />
         </svg>
       ),
-      title: "The Isolation Crisis",
+      title: "The Silence",
       stat: "250+",
       statLabel: "days/year away from home",
       description:
-        "Long-haul truckers spend months in complete solitude. This isolation contributes to depression, anxiety, and a staggering 94% annual turnover rate in the industry.",
+        "Months in complete solitude. Podcasts don't talk back. This isolation contributes to depression, anxiety, and a staggering 94% annual turnover rate in the industry.",
     },
     {
       icon: (
@@ -40,11 +40,11 @@ export default function Problem() {
           />
         </svg>
       ),
-      title: "Compliance Friction",
+      title: "The Tablet Trap",
       stat: "14hrs",
       statLabel: "of daily ELD management",
       description:
-        "ELD management requires constant tablet interaction while tired, in a hurry, or wearing gloves. Pre-trip inspections become tedious checkbox exercises leading to compliance shortcuts.",
+        "Stop stabbing at a screen with frozen fingers. ELD management while tired, in a hurry, or wearing gloves isn't just annoying—it's a compliance risk.",
     },
     {
       icon: (
@@ -63,11 +63,11 @@ export default function Problem() {
           />
         </svg>
       ),
-      title: "Health Deterioration",
+      title: "The Health Crisis",
       stat: "2x",
       statLabel: "higher obesity rate",
       description:
-        "The sedentary nature of trucking combined with limited healthy food options creates a health crisis. Drivers face elevated risks of diabetes, cardiovascular disease, and chronic pain.",
+        "Sitting for 14 hours destroys your back. Truck stop food destroys your metabolism. Drivers face elevated risks of diabetes, cardiovascular disease, and chronic pain.",
     },
     {
       icon: (
@@ -86,11 +86,11 @@ export default function Problem() {
           />
         </svg>
       ),
-      title: "Information Fragmentation",
+      title: "The App Overload",
       stat: "6+",
       statLabel: "apps to juggle daily",
       description:
-        "Drivers juggle multiple apps for navigation, ELD, fuel, parking, weather, and load management. Finding truck-safe routes or available parking becomes a frustrating scavenger hunt.",
+        "Navigation, ELD, fuel, parking, weather, load management—all separate apps. Finding truck-safe routes or available parking becomes a frustrating scavenger hunt.",
     },
   ];
 
@@ -100,11 +100,11 @@ export default function Problem() {
         {/* Section header */}
         <div className="text-center mb-16">
           <h2 id="problem-heading" className="text-4xl md:text-5xl font-bold text-[#F0F3F6] mb-4">
-            Trucking&apos;s Hidden Crisis
+            You Run a Business from a Cab
           </h2>
           <p className="text-xl text-[#8B949E] max-w-2xl mx-auto">
-            3.5 million professional truck drivers face daily challenges that
-            most apps ignore. We&apos;re changing that.
+            3.5 million drivers face daily challenges that most apps ignore.
+            Where&apos;s your backup?
           </p>
         </div>
 
@@ -144,7 +144,7 @@ export default function Problem() {
         <div className="mt-16 text-center">
           <p className="text-2xl text-[#8B949E]">
             <span className="text-[#F0F3F6] font-semibold">
-              Truckers deserve better.
+              Drivers deserve better.
             </span>{" "}
             They need a co-pilot, not another app.
           </p>
