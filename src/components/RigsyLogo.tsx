@@ -77,7 +77,7 @@ export function RigsyLogoIcon({
       </g>
 
       {/* Orange accent dot */}
-      <circle cx="50" cy="25" r="2" fill="#FF6B35" />
+      <circle cx="50" cy="25" r="2" fill="#F97316" />
     </svg>
   );
 }
@@ -102,8 +102,8 @@ export function RigsyWordmark({
     >
       <defs>
         <linearGradient id="wordmark-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stopColor="#F0F3F6" />
-          <stop offset="100%" stopColor="#8B949E" />
+          <stop offset="0%" stopColor="#1F2937" />
+          <stop offset="100%" stopColor="#4B5563" />
         </linearGradient>
       </defs>
       <text
@@ -141,7 +141,7 @@ export default function RigsyLogo({
     <div className={`flex items-center gap-2 ${className}`}>
       <RigsyLogoIcon size={size} showGlow={showGlow} />
       <span
-        className="font-bold text-[#F0F3F6]"
+        className="font-bold text-[#1F2937]"
         style={{ fontSize: size * 0.7 }}
       >
         Rigsy
@@ -179,12 +179,12 @@ export function RigsyLogoBadge({
 }) {
   return (
     <div
-      className={`rounded-full bg-linear-to-br from-[#4B5EAA] to-[#FF6B35] p-[2px] ${className}`}
+      className={`rounded-full bg-linear-to-br from-[#6366F1] to-[#F97316] p-[2px] ${className}`}
       style={{ width: size, height: size }}
       aria-hidden="true"
     >
       <div
-        className="w-full h-full rounded-full bg-[#0D1117] flex items-center justify-center"
+        className="w-full h-full rounded-full bg-white flex items-center justify-center"
       >
         <RigsyLogoIcon size={size * 0.6} />
       </div>
